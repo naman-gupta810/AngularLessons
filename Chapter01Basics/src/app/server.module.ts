@@ -4,6 +4,7 @@ import {NgModule} from '@angular/core';
 import {HomePageComponent} from './home-page.component';
 import {ServerListComponent} from './servers/server-list/server-list.component';
 import {ServerComponent} from './servers/server/server.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {ServerComponent} from './servers/server/server.component';
     ServerComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [HomePageComponent]

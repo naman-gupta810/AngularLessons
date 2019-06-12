@@ -1,3 +1,16 @@
+<label>Server Name</label>
+<input (input)="updateServerName($event)" class="form-control" type="text">
+{{serverName}}
+<br/>
+<label>Binding Server Name</label>
+<input [(ngModel)]="bindingServerName" class="form-control" type="text">
+{{bindingServerName}}
+<br/>
+<button (click)="createNewServer()"
+        [disabled]="!allowNewServer"
+        class="btn btn-primary">Add New Server
+</button>
+<p *ngIf="serverCreated">{{anyServerCreated}}</p>
 <ul>
   <li>
     <lrn-server></lrn-server>

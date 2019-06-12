@@ -127,6 +127,54 @@ String interpolation syntax is {{<variable_name>}} in template. For this example
 [server.component.ts](src/app/servers/server/server.component.ts) and [server.component.html](src/app/servers/server/server.component.html).
 
 Any Expression which return string in the end can be used in String interpolation. We can't use multiline expression in this.
-We can call the methods as well withing this. 
+We can call the methods as well withing this.
+
+
+##### Property binding
+In this we bind typescript variables with templates. The variables are declared and changed depending on business logic and it's 
+changed value will be reflected on the template using property binding. We can bind any variable type to property that accepts that 
+particular variable type. For example in [server.component.ts](src/app/servers/server-list/server-list.component.ts) 
+and [server.component.html](src/app/servers/server-list/server-list.component.html) we bind disabled property with boolean variable of the
+template allowNewServer.
+
+
+##### Event binding
+This binding is use to react on events. Whenever any events happen some business logic might get execute and change output.
+For ex. On above example button click we want to change some text using method. Then we use event binding. Property binding 
+use square brackets [] and event binding use round brackets () around property or method. See in example.
+
+To pass the data from an event we can use a variable <b>$event</b> from template which is passed to method. And method extract
+the value set it to particular value.
+
+##### Two-way binding 
+In two way binding we bind a particular variable to both event and property using banana bracket [()] and directive ngModel.
+See Example of two way binding in last example. Also we can see that if value changed in model then it reflects to the template
+as well.
+
+
+#Directives
+This is second Key Building block of Angular application. Directives are instruction to DOM. Component are a kind of directive,
+which contains the Template with TS code which instructs to DOM to add the template where we put the selector. But there are
+directives without template. We can create directive with @Directive decorator, But this we will learn in chapter 4. Right 
+now we are going to look some of important built-in directive.
+  
+  <b>1. ngIf</b>
+  
+  If we want to show a particular element conditionally then we use this directive. Example below
+  ```angular2html
+    <p *ngIf="buttonClicked">This will show if and only if button Clicked!</p>
+  ```
+  
+  In case we want to perform if-else operation the syntax will be like below:
+  ```angular2html
+     <p *ngIf="buttonClicked; else noButtonClicked">This will show if and only if button Clicked!</p>
+     <ng-template #noButtonClicked>
+        <p>This will show in else if button not clicked!</p>
+     </ng-template>
+  ```
+  In this #noButtonClicked is local reference in the template,we will learn about local references in upcoming chapters.
+  ng-template is a component directive which ships with angular and used to mark places in DOM. Then we pass our local 
+  reference in the ngIf with else condition and reference to template local variable which will
+  be shown if the condition is false.
 
 
