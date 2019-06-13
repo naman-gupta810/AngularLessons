@@ -133,8 +133,8 @@ We can call the methods as well withing this.
 ##### Property binding
 In this we bind typescript variables with templates. The variables are declared and changed depending on business logic and it's 
 changed value will be reflected on the template using property binding. We can bind any variable type to property that accepts that 
-particular variable type. For example in [server.component.ts](src/app/servers/server-list/server-list.component.ts) 
-and [server.component.html](src/app/servers/server-list/server-list.component.html) we bind disabled property with boolean variable of the
+particular variable type. For example in [server-list.component.ts](src/app/servers/server-list/server-list.component.ts) 
+and [server-list.component.html](src/app/servers/server-list/server-list.component.html) we bind disabled property with boolean variable of the
 template allowNewServer.
 
 
@@ -177,4 +177,46 @@ now we are going to look some of important built-in directive.
   reference in the ngIf with else condition and reference to template local variable which will
   be shown if the condition is false.
 
+ <b>2. ngStyle</b>
 
+  Unlike ngIf, ngStyle is attribute directive. ngIf was structural directive, which add or remove
+  elements in DOM depending on condition. ngStyle will not add or remove DOM elements, it will apply the 
+  attribute properties depending on parameter passed to this. ngStyle takes array of key value pairs, key is style property
+  Name and value is the styling value. Ex. [server.component.html](src/app/servers/server/server.component.html)
+  ```angular2html
+    <p [ngStyle]="{color:getColor()}">This is my server with ID {{ID}} and status {{getServerStatus()}} </p>
+  ```
+
+  <b>3. ngClass</b>
+  
+  ngStyle helps us to style our elements on basis of condition, ngClass helps us to add or remove class on the go like ngStyle.
+  Unlike ngStyle the ngClass takes the array of key value pairs, where key contains class name and value contains the expression
+  or method which return boolean. if the expression returns true then only it will attach CSS class.
+  Ex. [server.component.html](src/app/servers/server/server.component.html)
+  ```angular2html
+    <p [ngStyle]="{color:getColor()}"
+        [ngClass]="{'alert-info':getServerStatus()==='Online'}">This is my server with ID {{ID}} and status {{getServerStatus()}} </p>
+  ```
+  
+   <b>4. ngFor</b>
+  
+   ngFor is structural directive. We can use this to repeat a element depending on the array or index we want. Like in example below:
+   [server-list.component.ts](src/app/servers/server-list/server-list.component.ts) 
+   and [server-list.component.html](src/app/servers/server-list/server-list.component.html). 
+   
+   ```angular2html
+      <ul>
+        <li *ngFor="let server of servers">
+          <lrn-server></lrn-server>
+        </li>
+      </ul>
+  ```
+  
+  If we want to access index for array then we will use like below:
+  ```angular2html
+    <ul>
+      <li *ngFor="let server of servers; let i = index">
+        <lrn-server></lrn-server> <p>{{i}}</p>
+      </li>
+    </ul
+  ```

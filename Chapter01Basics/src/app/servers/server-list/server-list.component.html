@@ -12,16 +12,8 @@
 </button>
 <p *ngIf="serverCreated">{{anyServerCreated}}</p>
 <ul>
-  <li>
+  <li *ngFor="let server of servers; let i = index">
     <lrn-server></lrn-server>
-  </li>
-  <li>
-    <lrn-server></lrn-server>
-  </li>
-  <li>
-    <lrn-server></lrn-server>
-  </li>
-  <li>
-    <lrn-server></lrn-server>
+    <p>{{i}}</p>
   </li>
 </ul>
