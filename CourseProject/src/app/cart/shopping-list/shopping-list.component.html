@@ -1,8 +1,16 @@
 <div class="row">
-  <div class="col-10">
+  <div class="col-sm-12">
     <rb-shopping-edit></rb-shopping-edit>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-10">
     <hr>
-    <p>Ingredient List</p>
+    <ul class="list-group">
+      <a class="list-group-item" style="cursor: pointer" *ngFor="let ingredient of ingredients">
+        {{ingredient.name}} in amount {{ingredient.amount + ' ' + ingredient.unit}}
+      </a>
+    </ul>
   </div>
 
 </div>

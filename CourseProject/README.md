@@ -53,8 +53,10 @@ Now with this let's begin:
       * [common/header/header.component.ts](src/app/common/header/header.component.ts)
       * [recipe/recipe-details/recipe-details.component.ts](src/app/recipe/recipe-details/recipe-details.component.ts)
       * [recipe/recipe-list/recipe-list.component.ts](src/app/recipe/recipe-list/recipe-list.component.ts)
-      * [recipe/recipe-list/recipe-item/recipe-item.component.ts](src/app/recipe/recipe-list/recipe-item/recipe-item.component.ts)
+      * [recipe/recipe-list/recipe-item/recipe-item.component.ts](src/app/recipe/recipe-details/recipe-item/recipe-item.component.ts)
       * [recipe/recipe-view-container/recipe-view-container.component.ts](src/app/recipe/recipe-view-container/recipe-view-container.component.ts)
       * [cart/shopping-list/shopping-list.component.ts](src/app/cart/shopping-list/shopping-list.component.ts)
       * [cart/shopping-edit/shopping-edit.component.ts](src/app/cart/shopping-edit/shopping-edit.component.ts)
-  5. 
+  5. We created header in HTML and then we are going to create models for our application which holds the data and build
+  some display using BootStrap 4.
+    

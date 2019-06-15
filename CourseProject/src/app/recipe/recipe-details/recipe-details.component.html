@@ -1,3 +1,35 @@
-<p>
-  recipe-details works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <img [src]="recipe.imagePath" [alt]="recipe.name" class="img-fluid" style="max-width: 400px"/>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h2>{{recipe.name}}</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group" role="group">
+      <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Mange Recipe
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <li><a class="dropdown-item" href="#">To Shopping List</a></li>
+        <li><a class="dropdown-item" href="#">Edit Recipe</a></li>
+        <li><a class="dropdown-item" href="#">Delete Recipe</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p class="text-justify">{{recipe.description}}</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p>Ingredients:</p>
+  </div>
+</div>
