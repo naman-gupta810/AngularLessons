@@ -1,0 +1,11 @@
+<div class="container">
+  <ch-server-form (serverAdded)="onServerAdd($event)"
+  (blueprintAdded)="onBlueprintAdd($event)"></ch-server-form>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12">
+      <ch-server-view *ngFor="let serverElement of serverElements" [element]="serverElement"></ch-server-view>
+    </div>
+  </div>
+</div>
+
