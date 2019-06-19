@@ -6,5 +6,9 @@ import {Component} from '@angular/core';
   styleUrls: ['./recipe-book-root.component.css']
 })
 export class RecipeBookRootComponent {
-  title = 'CourseProject';
+  selectedMenuItem = 'recipe';
+
+  changeMenu(menuName: string) {
+    this.selectedMenuItem = menuName;
+  }
 }

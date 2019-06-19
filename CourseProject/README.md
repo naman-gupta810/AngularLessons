@@ -59,4 +59,54 @@ Now with this let's begin:
       * [cart/shopping-edit/shopping-edit.component.ts](src/app/cart/shopping-edit/shopping-edit.component.ts)
   5. We created header in HTML and then we are going to create models for our application which holds the data and build
   some display using BootStrap 4.
-    
+  
+## After Chapter 2 Completion
+We have learn data binding and event binding, now we are going to use that to enable navigation and display recipe view.
+
+### Navigation
+The navigation we are building right now is not optimized solution, we will change as we move ahead through course. But 
+for now to enable the menu items we are going to use ngIf and event binding. For this we will emit an event whenever a menu
+clicked catch it in root component and store in variable and compare the variable value in ngIf.
+
+[header.component.html](/src/app/common/header/header.component.html)
+```angular2html
+ <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#" (click)="onSelect('recipe')">Recipe</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" (click)="onSelect('shoppingList')">Shopping List</a>
+      </li>
+ </ul>
+```
+[header.component.ts](/src/app/common/header/header.component.ts)
+```angular2
+ @Output() menuClicked: EventEmitter<string> = new EventEmitter();
+
+onSelect(menuItem: string) {
+    this.menuClicked.emit(menuItem);
+  }
+```
+[recipe-book-root.component.html](/src/app/recipe-book-root.component.html)
+```angular2html
+<rb-header (menuClicked)="changeMenu($event)"></rb-header>
+<br/>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <rb-recipe-view-container *ngIf="selectedMenuItem === 'recipe'"></rb-recipe-view-container>
+      <rb-shopping-list *ngIf="selectedMenuItem === 'shoppingList'"></rb-shopping-list>
+    </div>
+  </div>
+</div>
+```
+[recipe-book-root.component.ts](/src/app/recipe-book-root.component.ts)
+```angular2
+ selectedMenuItem = 'recipe';
+
+  changeMenu(menuName: string) {
+    this.selectedMenuItem = menuName;
+  }
+```
+
+### Recipe Details
