@@ -167,3 +167,52 @@ using property binding, which will show details of selected recipe.
 This is not optimize approach, we will improve this and make changes.
 
 ### Adding Ingredient to shopping list
+We will add the ingredient from the Input form to list of ingredients. For this we can use ViewChild and then can access
+element and get value build the ingredient and emit event which will add to list. But for our use case We are using two-way
+binding using ngModel and then emit an event to list component and add this to array of ingredients.
+
+[shopping-edit.component.html](src/app/cart/shopping-edit/shopping-edit.component.html)
+```angular2html
+  <div class="col-md-4 mb-3">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Name" ([ngModel])="ingredient.name">
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="amount">Amount</label>
+          <input type="number" class="form-control" id="amount" step="0.1" placeholder="amount" ([ngModel])="ingredient.amount">
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="unitSelect">Unit</label>
+          <select class="custom-select" id="unitSelect" ([ngModel])="ingredient.unit">
+            <option selected>Choose Unit</option>
+            <option value="gm">gm (Gram)</option>
+            <option value="ml">ml (Milliliter)</option>
+            <option value="unit">Unit (Nos.)</option>
+            <option value="kg">kg (Kilogram)</option>
+            <option value="l">l (Liter)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-2">
+          <button class="btn btn-success btn-block" type="submit" (click)="onIngredientAdd()">Add</button>
+        </div>
+```
+[shopping-edit.component.ts](src/app/cart/shopping-edit/shopping-edit.component.ts)
+```angular2
+ingredient: Ingredient = new Ingredient('Test', 0.1, 'ml');
+  @Output() ingredientAdd: EventEmitter<Ingredient> = new EventEmitter();
+    onIngredientAdd() {
+      console.log(this.ingredient);
+      this.ingredientAdd.emit(this.ingredient);
+    }
+```
+[shopping-list.component.html](src/app/cart/shopping-list/shopping-list.component.html)
+```angular2html
+  <div class="col-sm-12">
+    <rb-shopping-edit (ingredientAdd)="ingredients.push($event)"></rb-shopping-edit>
+  </div>
+```
+

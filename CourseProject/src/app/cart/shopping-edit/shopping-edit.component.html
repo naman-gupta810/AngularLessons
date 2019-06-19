@@ -1,20 +1,19 @@
 <div class="row">
   <div class="col-md-12">
-    <form>
       <div class="form-row">
         <div class="col-md-4 mb-3">
           <label for="name">Name</label>
-          <input type="text" class="form-control" id="name" placeholder="Name">
+          <input type="text" class="form-control" id="name" placeholder="Name" ([ngModel])="ingredient.name">
         </div>
 
         <div class="col-md-4 mb-3">
           <label for="amount">Amount</label>
-          <input type="number" class="form-control" id="amount" step="0.1" placeholder="amount">
+          <input type="number" class="form-control" id="amount" step="0.1" placeholder="amount" ([ngModel])="ingredient.amount">
         </div>
 
         <div class="col-md-4 mb-3">
           <label for="unitSelect">Unit</label>
-          <select class="custom-select" id="unitSelect">
+          <select class="custom-select" id="unitSelect" ([ngModel])="ingredient.unit">
             <option selected>Choose Unit</option>
             <option value="gm">gm (Gram)</option>
             <option value="ml">ml (Milliliter)</option>
@@ -26,7 +25,7 @@
       </div>
       <div class="form-row">
         <div class="col-md-2">
-          <button class="btn btn-success btn-block" type="submit">Add</button>
+          <button class="btn btn-success btn-block" type="submit" (click)="onIngredientAdd()">Add</button>
         </div>
         <div class="col-md-2">
           <button class="btn btn-danger btn-block" type="submit">Delete</button>
@@ -35,6 +34,5 @@
           <button class="btn btn-secondary btn-block" type="submit">Clear</button>
         </div>
       </div>
-    </form>
   </div>
 </div>
