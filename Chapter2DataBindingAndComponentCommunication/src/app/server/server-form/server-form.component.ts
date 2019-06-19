@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'ch-server-form',
@@ -8,24 +8,25 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class ServerFormComponent implements OnInit {
   @Output() serverAdded = new EventEmitter<{name: string, content: string}>();
   @Output() blueprintAdded = new EventEmitter<{name: string, content: string}>()
-  newServerName = '';
-  newServerContent = '';
+  // newServerName = '';
+  // newServerContent = '';
+  @ViewChild('serverContentInput', {static: true}) serverContentInput: ElementRef;
   constructor() { }
 
   ngOnInit() {
   }
 
-  onAddServer() {
+  onAddServer(serverNameInput: HTMLInputElement) {
     this.serverAdded.emit({
-      name: this.newServerName,
-      content: this.newServerContent
+      name: serverNameInput.value,
+      content: this.serverContentInput.nativeElement.value
     });
   }
 
-  onAddBlueprint() {
+  onAddBlueprint(serverNameInput: HTMLInputElement) {
     this.blueprintAdded.emit({
-      name: this.newServerName,
-      content: this.newServerContent
+      name:  serverNameInput.value,
+      content: this.serverContentInput.nativeElement.value
     });
   }
 

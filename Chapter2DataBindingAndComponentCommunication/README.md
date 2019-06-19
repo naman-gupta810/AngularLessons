@@ -54,3 +54,68 @@ then Emulated is default one which we have, Native i.e. browser native styling. 
 override it.
 
 ### Local references in template
+We can put the local references in our templates by using #variable_name on HTML tags. We can create
+reference to any DOM element and access that within the template not outside the template. Ex.:
+```angular2html
+<input type="text" class="form-control" #serverNameInput>
+```
+If we want to use this particular variable in our typescript code then we need to pass the reference 
+to method.
+```angular2
+onAddServer(serverNameInput: HTMLInputElement) {
+    this.serverAdded.emit({
+      name: serverNameInput.value,
+      content: this.newServerContent
+    });
+  }
+```
+If we want to access this variable in typescript class then we need to use @ViewChild Decorator.
+```angular2html
+<input type="text" class="form-control" #serverContentInput>
+```
+```angular2
+@ViewChild('serverContentInput', {static: true}) serverContentInput: ElementRef;
+```
+
+### Projecting using ng-content
+Sometimes we get into the situation where we need to project the HTML which is passed between
+the opening and closing of our custom component tags Example of such scenario is when you are
+working with tab or card component and expecting to content is passed by template using it.
+For Ex. we can move server Blueprint view like this.
+```angular2html
+ <ch-server-view *ngFor="let serverElement of serverElements" [element]="serverElement">
+        <p class="card-text">
+          <strong *ngIf="serverElement.type === 'server'" style="color: red">{{ serverElement.content }}</strong>
+          <em *ngIf="serverElement.type === 'blueprint'">{{ serverElement.content }}</em>
+        </p>
+</ch-server-view>
+```
+and then to project this we can use 'ng-content' directive within our template in which we are working.
+```angular2html
+ <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+```
+
+## Component LifeCycle
+We have seen ngOnInit method on every new component generated. This is a lifecycle hook. When Angular 
+initiated component it goes through couple of stages for lifecycle and provide us hooks to execute custom
+code for this. We are going to see component lifecycle and hooks provided by Angular to those stages to
+execute custom code.
+  * ngOnChanges - Called after a bound input property changes(Called also when component created) 
+  * ngOnInit - Called once the component is initialized (Run after constructor)
+  * ngDoCheck - Called during every change detection run
+  * ngAfterContentInit - Called after content (ng-content) has been projected into view
+  * ngAfterContentChecked - Called every time the projected content has been checked
+  * ngAfterViewInit - Called after the component’s view (and child views) has been initialized
+  * ngAfterViewChecked - Called every time the view (and child views) have been checked
+  * ngOnDestroy - Called once the component is about to be destroyed
+
+Ex. : [server-view.component.ts](src/app/server/server-view/server-view.component.ts)
+
+### Access ng-content local variable access
+When we use ng-content which is going to project in template and we declare variable in it
+and we want to access it within the component it is going to project, then to get access to
+that variable we use @ContentChild decorator. Ex. 
+[server-view.component.ts](src/app/server/server-view/server-view.component.ts)
+
