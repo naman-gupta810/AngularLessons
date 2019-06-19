@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Recipe} from '../../model/recipe';
 
 @Component({
   selector: 'rb-recipe-view-container',
@@ -7,10 +8,11 @@ import {Component, OnInit} from '@angular/core';
 })
 export class RecipeViewContainerComponent implements OnInit {
 
+  selectedRecipe: Recipe;
+
   constructor() {
   }
 
   ngOnInit() {
   }
-
 }

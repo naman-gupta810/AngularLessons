@@ -53,7 +53,7 @@ Now with this let's begin:
       * [common/header/header.component.ts](src/app/common/header/header.component.ts)
       * [recipe/recipe-details/recipe-details.component.ts](src/app/recipe/recipe-details/recipe-details.component.ts)
       * [recipe/recipe-list/recipe-list.component.ts](src/app/recipe/recipe-list/recipe-list.component.ts)
-      * [recipe/recipe-list/recipe-item/recipe-item.component.ts](src/app/recipe/recipe-details/recipe-item/recipe-item.component.ts)
+      * [recipe/recipe-list/recipe-list-item/recipe-list-item.component.ts](src/app/recipe/recipe-list/recipe-list-item/recipe-list-item.component.ts)
       * [recipe/recipe-view-container/recipe-view-container.component.ts](src/app/recipe/recipe-view-container/recipe-view-container.component.ts)
       * [cart/shopping-list/shopping-list.component.ts](src/app/cart/shopping-list/shopping-list.component.ts)
       * [cart/shopping-edit/shopping-edit.component.ts](src/app/cart/shopping-edit/shopping-edit.component.ts)
@@ -61,7 +61,8 @@ Now with this let's begin:
   some display using BootStrap 4.
   
 ## After Chapter 2 Completion
-We have learn data binding and event binding, now we are going to use that to enable navigation and display recipe view.
+We have learn data binding and event binding, now we are going to use that to enable navigation, display recipe view 
+and allow user to add ingredient in shopping list.
 
 ### Navigation
 The navigation we are building right now is not optimized solution, we will change as we move ahead through course. But 
@@ -110,3 +111,59 @@ onSelect(menuItem: string) {
 ```
 
 ### Recipe Details
+Now we are going to use event binding to show the details of selected recipe. Before this we have done some refactoring,
+Which is for recipe list. We are going to pass each recipe to recipe list item which creates the list time and render
+left side list each item. To enable the recipe details on selection we will transmit an event on list item click event, 
+which is captured by recipe-list-item and then we capture this event and then transmit a event to parent component which
+is view container for our recipe view and this view container takes this event emitted value and pass that to recipe detail
+using property binding, which will show details of selected recipe.
+
+[recipe-list-item.component.html](src/app/recipe/recipe-list/recipe-list-item/recipe-list-item.component.html)
+```angular2html
+<a href="#" class="list-group-item list-group-item-action
+       d-flex justify-content-between align-items-center" (click)="selectRecipe(recipe)">
+```
+[recipe-list-item.component.ts](src/app/recipe/recipe-list/recipe-list-item/recipe-list-item.component.ts)
+```angular2
+  @Input() recipe: Recipe;
+  @Output() recipeToDisplay: EventEmitter<Recipe> = new EventEmitter();
+   selectRecipe(recipe: Recipe) {
+        this.recipeToDisplay.emit(recipe);
+    }
+```
+[recipe-list.component.html](src/app/recipe/recipe-list/recipe-list.component.html)
+```angular2html
+ <rb-recipe-list-item *ngFor="let recipe of recipes" [recipe]="recipe"
+        (recipeToDisplay)="selectRecipe($event)"></rb-recipe-list-item>
+```
+[recipe-list.component.ts](src/app/recipe/recipe-list/recipe-list.component.ts)
+```angular2
+@Output() selectedRecipe: EventEmitter<Recipe> = new EventEmitter();
+  selectRecipe(recipe: Recipe) {
+    this.selectedRecipe.emit(recipe);
+  }
+```
+[recipe-view-container.component.html](src/app/recipe/recipe-view-container/recipe-view-container.component.html)
+```angular2html
+  <div class="col-md-5">
+    <rb-recipe-list (selectedRecipe)="selectedRecipe = $event"></rb-recipe-list>
+  </div>
+  <div class="col-md-7">
+    <rb-recipe-details *ngIf="selectedRecipe; else infoText" [recipe]="selectedRecipe"></rb-recipe-details>
+        <ng-template #infoText>
+          <p>Please select a recipe</p>
+        </ng-template>
+  </div>
+```
+[recipe-view-container.component.ts](src/app/recipe/recipe-view-container/recipe-view-container.component.ts)
+```angular2
+  selectedRecipe: Recipe;
+```
+[recipe-details.component.ts](src/app/recipe/recipe-details/recipe-details.component.ts)
+```angular2
+    @Input() recipe: Recipe;
+```
+
+This is not optimize approach, we will improve this and make changes.
+
+### Adding Ingredient to shopping list

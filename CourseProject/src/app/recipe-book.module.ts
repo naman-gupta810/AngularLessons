@@ -7,7 +7,7 @@ import {RecipeDetailsComponent} from './recipe/recipe-details/recipe-details.com
 import {ShoppingListComponent} from './cart/shopping-list/shopping-list.component';
 import {HeaderComponent} from './common/header/header.component';
 import {ShoppingEditComponent} from './cart/shopping-edit/shopping-edit.component';
-import {RecipeItemComponent} from './recipe/recipe-details/recipe-item/recipe-item.component';
+import {RecipeListItemComponent} from './recipe/recipe-list/recipe-list-item/recipe-list-item.component';
 import {RecipeViewContainerComponent} from './recipe/recipe-view-container/recipe-view-container.component';
 
 @NgModule({
@@ -18,7 +18,7 @@ import {RecipeViewContainerComponent} from './recipe/recipe-view-container/recip
     ShoppingListComponent,
     HeaderComponent,
     ShoppingEditComponent,
-    RecipeItemComponent,
+    RecipeListItemComponent,
     RecipeViewContainerComponent
   ],
   imports: [
