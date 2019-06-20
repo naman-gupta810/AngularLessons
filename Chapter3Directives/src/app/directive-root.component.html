@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <button
+        class="btn btn-primary"
+        (click)="onlyOdd = !onlyOdd">Only show odd numbers
+      </button>
+      <br><br>
+      <ul class="list-group" [ngClass]="{'text-primary' : onlyOdd}">
+        <div *ngIf="onlyOdd">
+          <li class="list-group-item" *ngFor="let number of oddNumbers">
+            {{number}}
+          </li>
+        </div>
+        <div *appReverseIf="onlyOdd">
+          <li class="list-group-item" *ngFor="let number of evenNumbers">
+            {{number}}
+          </li>
+        </div>
+      </ul>
+<!--      <ng-template [ngIf]="onlyOdd">
+        <p>Only odd</p>
+      </ng-template>-->
+      <p basicHighlightWithYellow>Basic Highlight Directive Test</p>
+      <p appRefactoredHighligter>Refactored Directive Test</p>
+      <p appReactiveDirective>Reactive Mouse Hover Directive Test</p>
+      <p appBetterHighlight [defaultColor]="'yellow'" [highlightColor]="'red'">Input Hover Directive Test</p>
+    </div>
+  </div>
+</div>
