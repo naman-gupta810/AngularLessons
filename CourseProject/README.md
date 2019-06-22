@@ -216,3 +216,15 @@ ingredient: Ingredient = new Ingredient('Test', 0.1, 'ml');
   </div>
 ```
 
+### Building and using services
+As we have two main features of application we will build two service, One manages the recipe
+and other manages the shopping-cart. We will use services for cross-component communication.
+ 
+ 
+For this we have created below two services:
+* [Recipe Service](src/app/recipe/recipe.service.ts)
+* [Shopping-cart Service](src/app/cart/shopping-cart.service.ts)
+
+Then we removed almost all event binding and used service to emit and subscribe the event.
+After this we also added one function to put all the recipe ingredients to shopping list. 
+

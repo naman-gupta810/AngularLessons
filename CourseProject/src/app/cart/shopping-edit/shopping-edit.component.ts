@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Ingredient} from '../../model/ingredient';
+import {ShoppingCartService} from '../shopping-cart.service';
 
 @Component({
   selector: 'rb-shopping-edit',
@@ -7,16 +8,16 @@ import {Ingredient} from '../../model/ingredient';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  ingredient: Ingredient = new Ingredient('Test', 0.1, 'ml');
-  @Output() ingredientAdd: EventEmitter<Ingredient> = new EventEmitter();
-  constructor() {
+  ingredient: Ingredient;
+  constructor(private shoppingCartService: ShoppingCartService) {
   }
 
   ngOnInit() {
+    this.ingredient = new Ingredient('', 0, null);
   }
 
   onIngredientAdd() {
-    console.log(this.ingredient);
-    this.ingredientAdd.emit(this.ingredient);
+    this.shoppingCartService.addIngredient(this.ingredient);
+    this.ingredient = new Ingredient('', 0, null);
   }
 }
