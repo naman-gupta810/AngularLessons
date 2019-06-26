@@ -173,4 +173,72 @@ and load the defined components. Ex:
     
 
 ### Setting up child routes
+ * In above section we have set child routes, Now we can set child routes too, that will help to render content
+ under parent component. To set the child routes, we need to change below in app.module.ts and then we need to provide
+ router-outlet in the parent component template. Ex.
+ 
+    app.module.ts
+    ```angular2
+     const routes: Routes = [{path: '', component: HomeComponent},
+         {
+           path: 'users', component: UsersComponent, children: [
+             {path: ':id/:name', component: UserComponent}
+           ]
+         },
+         {
+           path: 'servers', component: ServersComponent, children: [
+             {path: ':id', component: ServerComponent},
+             {path: ':id/edit', component: EditServerComponent}
+           ]
+         }
+       ];
+    ```
+    servers.component.html
+    ```angular2html
+      <div class="col-xs-12 col-sm-4">
+        <router-outlet></router-outlet>
+      </div>
+    ```
+    users.component.html
+    ```angular2html
+     <div class="col-xs-12 col-sm-4">
+         <!--<app-user></app-user>-->
+         <router-outlet></router-outlet>
+       </div>
+    ```
 
+### Preserve Query params on redirect  
+Like in server component we are getting allowEdit query parameter but when we click on edit server it got lost. If we
+want to preserve the parameter and forward it with navigate we need to use syntax like below:
+```angular2
+ editServer() {
+    this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
+  }
+```
+
+***queryParamsHandling: 'preserve'}*** will forward the current queryParams to navigated URL and if we use the value merge
+then it will merge the queryParams with the coming one and forward it to URL.
+
+### Redirection and WildCard
+In most application we need to configure the Page not found, or content unavailable page, if application not server page
+or user provide malicious URL for the host. To configure this kind of route, we will create a route and redirect them to
+Not found page using wildcards. For this we do below:
+```angular2
+const routes: Routes = [{path: '', component: HomeComponent},
+  {
+    path: 'users', component: UsersComponent, children: [
+      {path: ':id/:name', component: UserComponent}
+    ]
+  },
+  {
+    path: 'servers', component: ServersComponent, children: [
+      {path: ':id', component: ServerComponent},
+      {path: ':id/edit', component: EditServerComponent}
+    ]
+  },
+  {path: 'not-found', component: PageNotFoundComponent},
+  {path: '**', redirectTo: 'not-found'}
+];
+```
+  ** Please note always put the wildcard path in last of the array, otherwise you will redirect to path for every valid
+  routes too.
