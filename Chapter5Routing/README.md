@@ -242,3 +242,109 @@ const routes: Routes = [{path: '', component: HomeComponent},
 ```
   ** Please note always put the wildcard path in last of the array, otherwise you will redirect to path for every valid
   routes too.
+  
+### Outsource our routing to other module
+```angular2
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from './home/home.component';
+import {UsersComponent} from './users/users.component';
+import {UserComponent} from './users/user/user.component';
+import {ServersComponent} from './servers/servers.component';
+import {ServerComponent} from './servers/server/server.component';
+import {EditServerComponent} from './servers/edit-server/edit-server.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+
+const routes: Routes = [{path: '', component: HomeComponent},
+  {
+    path: 'users', component: UsersComponent, children: [
+      {path: ':id/:name', component: UserComponent}
+    ]
+  },
+  {
+    path: 'servers', component: ServersComponent, children: [
+      {path: ':id', component: ServerComponent},
+      {path: ':id/edit', component: EditServerComponent}
+    ]
+  },
+  {path: 'not-found', component: PageNotFoundComponent},
+  {path: '**', redirectTo: 'not-found'}
+];
+
+@NgModule({
+    imports:
+      [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
+  }
+)
+export class AppRoutingModule {
+
+}
+```
+
+### Introduction to Guards
+This is used to execute particular code before route will load. If we want to check the user is login
+or authorized for the root or not, we use this route guards. To guard a route first we need to create
+class which implements canActivate interface in which we return boolean or promise which returns the boolean
+result, then we place this class on the router.
+
+[auth-guard.service.ts](src/app/auth-guard.service.ts)
+```angular2
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {AuthService} from '../auth.service';
+
+@Injectable({providedIn: 'root'})
+export class AuthGuard implements CanActivate {
+
+  constructor(private authService: AuthService, private router: Router) {
+  }
+
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Promise<boolean | UrlTree> | boolean | UrlTree {
+    this.authService.isAuthenticated().then((authenticate: boolean) => {
+      if (authenticate) {
+        return true;
+      } else {
+        this.router.navigate(['/']);
+        return false;
+      }
+    });
+  }
+}
+
+```
+[app.routing.module.ts](src/app/app.routing.module.ts) 
+```angular2
+  {
+    path: 'servers', canActivate: [AuthGuard], component: ServersComponent, children: [
+      {path: ':id', component: ServerComponent},
+      {path: ':id/edit', component: EditServerComponent}
+    ]
+  }
+```
+
+In case if you just want to check for child routes not for the root component then we need to implement
+canActivateChild and provide in route canActivateChild parameter like below:
+```angular2
+ canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean| Observable<boolean> | Promise<boolean> {
+    return this.canActivate(childRoute, state);
+  }
+```
+```angular2
+{
+    path: 'servers', canActivateChild: [AuthGuard], component: ServersComponent, children: [
+      {path: ':id', component: ServerComponent},
+      {path: ':id/edit', component: EditServerComponent}
+    ]
+  }
+```
+
+
+Now consider we are working on some route and we want to prevent navigating to any other route then we can use the
+canDeactivate feature of the Angular routing module. We need this functionality when we are dealing with any form 
+and something has been changed within the form and we want to confirm from user that he is not updated changes
+and want to discard changes.
+
+For Demo purpose we are applying this guard changes to Edit server component.
