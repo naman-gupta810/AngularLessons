@@ -347,4 +347,57 @@ canDeactivate feature of the Angular routing module. We need this functionality 
 and something has been changed within the form and we want to confirm from user that he is not updated changes
 and want to discard changes.
 
-For Demo purpose we are applying this guard changes to Edit server component.
+For Demo purpose we are applying this guard changes to Edit server component. To make it generic guard for components
+we created one interface which will be implemented by component on which we want to perform checks and the guard will be
+of type this interface so it can call method which returns that we want to navigate or not to other links. Below are
+implementation files for this:
+ * [can-deactivate-component.ts](src/app/can-deactivate-component.ts)
+ * [can-deactivate.guard.ts](src/app/can-deactivate.guard.ts)
+ * [edit-server.component.ts](src/app/servers/edit-server/edit-server.component.ts)
+ * [app.routing.module.ts](src/app/app.routing.module.ts)
+ 
+
+## Passing static data and resolving dynamic data
+Consider a scenario where you want to pass static data from routes, or before rendering a component you want to resolve the
+data using webservice or get data from server. In that case we will use below techniques:
+
+### Static data pass to component
+
+We have created one component with name error-description in which we are going to pass the data from routing module.
+Then to pass the data on the component we define path as below:
+
+```angular2
+{path: 'page-not-available', component: ErrorDescriptionComponent, data: {message: 'Page not found for given URL'}},
+```
+And then we subscribe the activated route data and assign value of this message to page. 
+```angular2
+this.activatedRoute.data.subscribe((data: Data) => {
+      this.errorMessage = data['message'];
+    });
+```
+
+Files included to perform the static data pass are below:
+* [error-description.component.ts](src/app/error-description/error-description.component.ts)
+* [app.routing.module.ts](src/app/app.routing.module.ts)
+
+### Data resolution using resolver
+Now like when we navigate to some route and we want to resolve the data before the route is rendered.
+Like for the server component just consider you want to resolve server component before it component 
+render, then we will create guard which resolve data and provide data to component using router. To perform
+this below are list of files used:
+ * [server-resolver.ts](src/app/server-resolver.ts)
+ * [app.routing.module.ts](src/app/app.routing.module.ts)
+
+## Routing Location strategy
+Generally the route are resolved by server before it gets to angular resolver in that case server will 
+return server defined 404 page and not able to load our page. In such cases we use the # based routing 
+technique which appends the # before the host URL and after the # resource URL will be provided. To enable
+this feature for this kind of server we will use below line in routing.
+```angular2
+@NgModule({
+    imports:
+      [RouterModule.forRoot(routes, {useHash: true})],
+    exports: [RouterModule]
+  }
+)
+```
