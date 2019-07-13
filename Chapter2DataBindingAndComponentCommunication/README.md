@@ -12,11 +12,11 @@ and then we create our own event and bind it to event.
 By default all variables of a component is visible to that component only. If we want to expose
 any property or variable for property binding then we need to use @Input() decorator on that
 particular property. Ex.
-[server-view.component.ts](/src/app/server/server-view/server-view.component.ts)
+[server-view.component.ts](src/app/server/server-view/server-view.component.ts)
 
 In above component we expose the element property, by putting @Input() over it. Then to bind
 it we used square bracket and pass the value. 
-[chapter2-root.component.html](/src/app/chapter2-root.component.html)
+[chapter2-root.component.html](src/app/chapter2-root.component.html)
 
 
 #### Event Binding
@@ -30,11 +30,11 @@ or the component within it contained. To emit a event we need to do below steps:
   * Now to emit event we use EventEmitter emit method and pass the data we want to pass
   as part of event.
   
-Ex. [server-form.component.ts](/src/app/server/server-form/server-form.component.ts)
+Ex. [server-form.component.ts](src/app/server/server-form/server-form.component.ts)
 
-[chapter2-root.component.html](/src/app/chapter2-root.component.html)
+[chapter2-root.component.html](src/app/chapter2-root.component.html)
 
-[chapter2-root.component.ts](/src/app/chapter2-root.component.ts)
+[chapter2-root.component.ts](src/app/chapter2-root.component.ts)
 
 #### Issue with Data and Event binding
 When we are passing the data using data or event binding then this chain grows depends on the
