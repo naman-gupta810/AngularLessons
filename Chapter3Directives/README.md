@@ -33,11 +33,11 @@ build directive:
 
 Till now we have styled element using our directive, but it is now kind of very static. If we want to apply styling like 
 hover event, loading image on button click. So we can use HostListener Decorator within our directive and change style on
-the element. Ex. [reactive-directive.directive.ts](/src/app/custom-directives/reactive-directive.directive.ts)
+the element. Ex. [reactive-directive.directive.ts](src/app/custom-directives/reactive-directive.directive.ts)
 
 
 There is one more way to work with element instead of the Renderer, we will use @Hostbinding decorator, which takes the 
-property you want to change. Ex. [reactive-directive.directive.ts](/src/app/custom-directives/reactive-directive.directive.ts)
+property you want to change. Ex. [reactive-directive.directive.ts](src/app/custom-directives/reactive-directive.directive.ts)
 So, In example you can see background-color is set by renderer and for text-color we use @Hostbinding.
 
 
