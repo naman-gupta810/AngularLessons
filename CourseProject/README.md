@@ -69,7 +69,7 @@ The navigation we are building right now is not optimized solution, we will chan
 for now to enable the menu items we are going to use ngIf and event binding. For this we will emit an event whenever a menu
 clicked catch it in root component and store in variable and compare the variable value in ngIf.
 
-[header.component.html](/src/app/common/header/header.component.html)
+[header.component.html](src/app/common/header/header.component.html)
 ```angular2html
  <ul class="navbar-nav mr-auto">
       <li class="nav-item">
@@ -80,7 +80,7 @@ clicked catch it in root component and store in variable and compare the variabl
       </li>
  </ul>
 ```
-[header.component.ts](/src/app/common/header/header.component.ts)
+[header.component.ts](src/app/common/header/header.component.ts)
 ```angular2
  @Output() menuClicked: EventEmitter<string> = new EventEmitter();
 
@@ -88,7 +88,7 @@ onSelect(menuItem: string) {
     this.menuClicked.emit(menuItem);
   }
 ```
-[recipe-book-root.component.html](/src/app/recipe-book-root.component.html)
+[recipe-book-root.component.html](src/app/recipe-book-root.component.html)
 ```angular2html
 <rb-header (menuClicked)="changeMenu($event)"></rb-header>
 <br/>
@@ -101,7 +101,7 @@ onSelect(menuItem: string) {
   </div>
 </div>
 ```
-[recipe-book-root.component.ts](/src/app/recipe-book-root.component.ts)
+[recipe-book-root.component.ts](src/app/recipe-book-root.component.ts)
 ```angular2
  selectedMenuItem = 'recipe';
 
@@ -228,3 +228,4 @@ For this we have created below two services:
 Then we removed almost all event binding and used service to emit and subscribe the event.
 After this we also added one function to put all the recipe ingredients to shopping list. 
 
+### Setting up routes

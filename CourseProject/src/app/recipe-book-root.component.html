@@ -1,10 +1,9 @@
-<rb-header (menuClicked)="changeMenu($event)"></rb-header>
+<rb-header></rb-header>
 <br/>
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <rb-recipe-view-container *ngIf="selectedMenuItem === 'recipe'"></rb-recipe-view-container>
-      <rb-shopping-list *ngIf="selectedMenuItem === 'shoppingList'"></rb-shopping-list>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

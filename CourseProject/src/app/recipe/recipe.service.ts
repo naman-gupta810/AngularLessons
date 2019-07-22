@@ -9,7 +9,7 @@ import {ShoppingCartService} from '../cart/shopping-cart.service';
 export class RecipeService {
 
   private recipes: Recipe[] = [
-    new Recipe('Pasta', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
+    new Recipe(1, 'Pasta', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
       'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ' +
       'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2019/1/' +
@@ -17,7 +17,7 @@ export class RecipeService {
       [new Ingredient('Penne Pasta', 500, 'gm'),
         new Ingredient('Peper', 2, 'gm'),
         new Ingredient('Tomato', 1, 'unit')]),
-    new Recipe('Noodles', 'consectetur adipiscing elit, ' +
+    new Recipe(2, 'Noodles', 'consectetur adipiscing elit, ' +
       'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ' +
       'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       'https://kirbiecravings.com/wp-content/uploads/2018/02/garlic-noodles-61-700x680.jpg',
@@ -28,9 +28,17 @@ export class RecipeService {
 
   ];
 
-  selectRecipe: EventEmitter<Recipe> = new EventEmitter();
-
   constructor(private shoppingCartService: ShoppingCartService) {
+  }
+
+  getRecipeById(id: number): Recipe {
+    let selectedRecipe: Recipe = null;
+    for (const recipe of this.recipes) {
+      if (recipe.id === id) {
+        selectedRecipe = recipe;
+      }
+    }
+    return selectedRecipe;
   }
 
   getAllRecipes(): Recipe[] {

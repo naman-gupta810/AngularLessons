@@ -10,6 +10,7 @@ import {ShoppingEditComponent} from './cart/shopping-edit/shopping-edit.componen
 import {RecipeListItemComponent} from './recipe/recipe-list/recipe-list-item/recipe-list-item.component';
 import {RecipeViewContainerComponent} from './recipe/recipe-view-container/recipe-view-container.component';
 import {FormsModule} from '@angular/forms';
+import {RecipeBookRoutingModule} from './recipe-book.routing.module.ts/recipe-book.routing.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {FormsModule} from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RecipeBookRoutingModule
   ],
   providers: [],
   bootstrap: [RecipeBookRootComponent]
