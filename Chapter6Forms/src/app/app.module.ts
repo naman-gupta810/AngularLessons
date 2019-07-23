@@ -5,6 +5,7 @@ import {AppComponent} from './app.component';
 import {TemplateDrivenFormComponent} from './template-driven/template-driven-form/template-driven-form.component';
 import {ReactiveFormComponent} from './reactive/reactive-form/reactive-form.component';
 import {RouterModule, Routes} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 const applicationRoutes: Routes = [
@@ -20,6 +21,8 @@ const applicationRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(applicationRoutes)
   ],
   providers: [],
