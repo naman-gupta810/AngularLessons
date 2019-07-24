@@ -1,20 +1,18 @@
-# Forms
+# Forms and Pipes
+## Forms
 Angular Forms library provide a way to connect your logic(.ts file) with your form inputs. Also we
 need to validate input and change visualization depending on the validation and other properties.
 Angular form library provide these thing to us. There are two way of building a form in Angular
   * Template Driven Approach - In this approach Angular infers the Form Object from DOM, we will
     work on DOM and attach that to TS file.
-  * Reactive Approach - Form is created programmatically and the Form, once they are in place
+  * Reactive Approach - Form is created programmatically and template separately, once they are in place
     we will connect them manually, which gives us fined grained control on our forms.
- 
- 
-In this section of course, We will first see the both the approach and then in Syntax comparison section
-we will cover a table which contains function with the syntax used in both the Approach:
 
+In upcoming section we will see both the approaches and example.
 
-We will start by designing same form in template. We are commiting same as first commit for this chapter.
+We will start by designing same form in template. We are committing same as first commit for this chapter.
 
-## Template Driven Approach
+### Template Driven Approach
 Before working with the Template driven file we need to import the FormsModule form 'angular/core' in our 
 appModule to enable form support from Angular. So we will include that and start ahead with form.
 
@@ -199,7 +197,249 @@ which you want change in form. Ex.
     }
    ```
   
-## Reactive Approach
+### Reactive Approach
+To work with reactive forms we must include 'ReactiveFormsModule' in our app module. We already created a template
+before starting the chapter. Now we will create our form in TS file and connect that to template. So for creating
+basic structure of form first we need to define a formGroup in our TS file and then we initialize the form Controls
+one by one. Once this is done, We need to tell angular don't scan and create form object by scanning our template.
+So doing that we use the directive formGroup tag on the form. So It's look like below in TS and HTML file till now
+```angular2
+signUpForm: FormGroup;
+ngOnInit() {
+    this.signUpForm = new FormGroup({
+      userName: new FormControl(null),
+      email: new FormControl(null),
+      secretQuestion: new FormControl('maidenName')
+    });
+  }
+```
+As provided in secretQuestion attribute the maidenName will be selected value. Now connect the form with our signForm
+in the HTML, as well as controls. 
+```angular2html
+<h5>Reactive Form</h5>
+<form [formGroup]="signUpForm" (submit)="onSubmit()">
+  <div class="form-group">
+    <label for="username">User Name</label>
+    <input type="text" class="form-control" id="username" placeholder="UserName" formControlName="userName">
+  </div>
+  <button type="button" class="btn btn-success">Suggest UserName</button>
+  <div class="form-group">
+    <label for="mail">Email</label>
+    <input type="email" class="form-control" id="mail" placeholder="Email" formControlName="email">
+  </div>
+  <div class="form-group">
+    <label for="secretQuestion">Secret Question</label>
+    <select class="form-control" id="secretQuestion" formControlName="secretQuestion">
+      <option value="pet">Your First Name?</option>
+      <option value="school">Your last School Name?</option>
+      <option value="maidenName">Your mother maiden Name?</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+```
+So in above form we have assigned formGroup which holds our singUpForm, then we will bind our controls using 
+formControlName directive and pass the key from formGroup which we have kept in the TS file. Now control will
+be associated with keys of formGroup.
 
-## Summary
+Now let add the validation in form. To add the validation we will modify the formControls. We will pass the
+Validators and method of it as second argument of the formControl. Ex.
+```angular2
+ngOnInit() {
+    this.signUpForm = new FormGroup({
+      userName: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      secretQuestion: new FormControl('maidenName')
+    });
+  }
+```
+
+To validate the form we did below changes in template:
+```angular2html
+  <div class="form-group">
+    <label for="username">User Name</label>
+    <input type="text" class="form-control" id="username" placeholder="UserName" formControlName="userName"
+           [ngClass]="{'is-invalid':(signUpForm.get('userName').invalid && signUpForm.get('userName').touched),
+                    'is-valid': (signUpForm.get('userName').valid && signUpForm.get('userName').touched)}">
+    <div class="invalid-feedback">Please Enter valid username</div>
+  </div>
+  <button type="button" class="btn btn-success">Suggest UserName</button>
+  <div class="form-group">
+    <label for="mail">Email</label>
+    <input type="email" class="form-control" id="mail" placeholder="Email" formControlName="email"
+           [ngClass]="{'is-invalid':(signUpForm.get('email').invalid && signUpForm.get('email').touched),
+                    'is-valid': (signUpForm.get('email').valid && signUpForm.get('email').touched)}">
+    <div class="invalid-feedback">Please Enter a valid E-mail</div>
+  </div>
+```
+
+Now like we did in Template driven approach we will group the data in JSON array to build composite object. To
+do this in reactive approach we need to do below changes.
+```angular2
+ ngOnInit() {
+    this.signUpForm = new FormGroup({
+      userData: new FormGroup({
+        userName: new FormControl(null, Validators.required),
+        email: new FormControl(null, [Validators.required, Validators.email])
+      }),
+      secretQuestion: new FormControl('maidenName')
+    });
+  }
+```
+
+To accommodate the changes we need to add **\<div formGroupName="userData"\>** to the control we want to group,
+And since we added them in formGroup, we need to get them using formGroupName.formControlName. Like Below:
+```angular2
+<div formGroupName="userData">
+    <div class="form-group">
+      <label for="username">User Name</label>
+      <input type="text" class="form-control" id="username" placeholder="UserName" formControlName="userName"
+             [ngClass]="{'is-invalid':(signUpForm.get('userData.userName').invalid && signUpForm.get('userData.userName').touched),
+                    'is-valid': (signUpForm.get('userData.userName').valid && signUpForm.get('userData.userName').touched)}">
+      <div class="invalid-feedback">Please Enter valid username</div>
+    </div>
+    <button type="button" class="btn btn-success">Suggest UserName</button>
+    <div class="form-group">
+      <label for="mail">Email</label>
+      <input type="email" class="form-control" id="mail" placeholder="Email" formControlName="email"
+             [ngClass]="{'is-invalid':(signUpForm.get('userData.email').invalid && signUpForm.get('userData.email').touched),
+                    'is-valid': (signUpForm.get('userData.email').valid && signUpForm.get('userData.email').touched)}">
+      <div class="invalid-feedback">Please Enter a valid E-mail</div>
+    </div>
+  </div>
+``` 
+
+Like we had mentioned with reactive forms we have fine grained control over the template driven control. Now we will 
+add dynamic field in our form. We are adding hobbies field in our form which can be zero or more. We need to do below 
+changes in form:
+
+
+We need to add FormArray in userData field, and then when we click on the add hobby then we will create control and push
+the control in array. Then we will iterate over the array and create the control.
+```angular2
+ngOnInit() {
+    this.signUpForm = new FormGroup({
+      userData: new FormGroup({
+        userName: new FormControl(null, Validators.required),
+        email: new FormControl(null, [Validators.required, Validators.email]),
+        hobbies: new FormArray([])
+      }),
+      secretQuestion: new FormControl('maidenName')
+    });
+  }
+
+  onSubmit() {
+    console.log(this.signUpForm);
+  }
+
+  onAddHobby() {
+    const control = new FormControl(null, Validators.required);
+    (this.signUpForm.get('userData.hobbies') as FormArray).push(control);
+  }
+```
+
+```angular2html
+<div formArrayName="hobbies">
+      <label>Hobbies</label><br/>
+      <button type="button" class="btn btn-primary" (click)="onAddHobby()">Add New Hobby</button>
+      <div class="form-group" *ngFor="let hobbyControl of signUpForm.get('userData.hobbies').controls; let i=index">
+        <input type="text" class="form-control" [formControlName]="i"
+               [ngClass]="{'is-invalid':(hobbyControl.invalid && hobbyControl.touched),
+                    'is-valid': (hobbyControl.valid && hobbyControl.touched)}">
+      </div>
+    </div>
+```
+As we can see we passed the formArrayName and then we get the controls and iterate the array, and iterated through
+array and given the controlName on the array index.
+
+Now with Reactive forms we can provide custom validators too in the method argument. Like for this example we don't
+want userName to be Mark or Anna, so we can define the rule in the TS file and then provide that to in the array.
+We need to define validator by below code it should return key value pair if the field is invalid and if valid
+then we need to return null only.
+```angular2
+fodbiddedUserNames(formControl: FormControl): { [s: string]: boolean } {
+    if (formControl.value === 'Mark' || formControl.value === 'Anna') {
+      return {forbiddenUserName: true};
+    }
+    return null;
+  }
+```
+
+Now we will add this validator to our username formControl like below:
+```angular2
+  userName: new FormControl(null, [Validators.required, this.fodbiddedUserNames.bind(this)]),
+```
+
+On the custom validation we are returning key which can be used to show custom message by checking key like below:
+```angular2html
+<div class="invalid-feedback" *ngIf="signUpForm.get('userData.userName').errors['required']">This field is required</div>
+      <div class="invalid-feedback" *ngIf="signUpForm.get('userData.userName').errors['forbiddenUserName']">
+        This user is already registered
+      </div>
+```
+So when required if failed first message will be shown and when our custom validation will be failed then the,second 
+message will be shown.
+
+Sometimes we validate some fields value using the DB entries in sever. So in that case we can't use validators. We need
+to create Async validators which go to server and then provide that the field has valid value or not. For this example 
+we will create async validator for E-mail field and then we are going to use that. For demonstration purpose we will
+delay the validation using JS API like it is coming for server. The Async validator returns promise or observables, that
+will resolve to key value pair or null like in custom validators.
+
+```angular2
+fodbiddenEmail(formControl: FormControl): Promise<any> | Observable<any> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (formControl.value === 'test@test.com') {
+          resolve({forbiddedEmail: true});
+        }
+        resolve(null);
+      }, 2000);
+    });
+  }
+```
+
+To add this to form control we will use below code:
+```angular2
+ ngOnInit() {
+    this.signUpForm = new FormGroup({
+      userData: new FormGroup({
+        userName: new FormControl(null, [Validators.required, this.forbiddenUserNames.bind(this)]),
+        email: new FormControl(null, [Validators.required, Validators.email], [this.fodbiddenEmail.bind(this)]),
+        hobbies: new FormArray([])
+      }),
+      secretQuestion: new FormControl('maidenName')
+    });
+  }
+```
+
+Setting and patching value using TS file. 
+```angular2
+populateDefaultValues() {
+    this.signUpForm.setValue({
+      userData: {
+        userName: 'Default User',
+        email: 'test@gmail.com',
+        hobbies: [{1: 'PlayStation'}, {2: 'Tracking'}]
+      },
+      secretQuestion: 'school'
+    });
+  }
+
+  suggestUserName() {
+    this.signUpForm.patchValue({
+      userData: {userName: 'SuperUser'}
+    });
+  }
+```
+
+And reset of Form after submission.
+```angular2
+onSubmit() {
+    console.log(this.signUpForm);
+    this.signUpForm.reset({});
+  }
+```
+
+
 

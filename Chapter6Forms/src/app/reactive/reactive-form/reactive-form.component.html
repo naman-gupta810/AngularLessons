@@ -1,17 +1,39 @@
 <h5>Reactive Form</h5>
-<form>
-  <div class="form-group">
-    <label for="username">User Name</label>
-    <input type="text" class="form-control" id="username" placeholder="UserName">
+<form [formGroup]="signUpForm" (submit)="onSubmit()">
+  <div formGroupName="userData">
+    <div class="form-group">
+      <label for="username">User Name</label>
+      <input type="text" class="form-control" id="username" placeholder="UserName" formControlName="userName"
+             [ngClass]="{'is-invalid':(signUpForm.get('userData.userName').invalid && signUpForm.get('userData.userName').touched),
+                    'is-valid': (signUpForm.get('userData.userName').valid && signUpForm.get('userData.userName').touched)}">
+      <div class="invalid-feedback" *ngIf="signUpForm.get('userData.userName').invalid && signUpForm.get('userData.userName').errors['required']">This field is required</div>
+      <div class="invalid-feedback" *ngIf="signUpForm.get('userData.userName').invalid && signUpForm.get('userData.userName').errors['forbiddenUserName']">
+        This user is already registered
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary mr-2" (click)="populateDefaultValues()">Populate Default Values</button>
+    <button type="button" class="btn btn-success" (click)="suggestUserName()">Suggest UserName</button>
+    <div class="form-group">
+      <label for="mail">Email</label>
+      <input type="email" class="form-control" id="mail" placeholder="Email" formControlName="email"
+             [ngClass]="{'is-invalid':(signUpForm.get('userData.email').invalid && signUpForm.get('userData.email').touched),
+                    'is-valid': (signUpForm.get('userData.email').valid && signUpForm.get('userData.email').touched)}">
+      <div class="invalid-feedback">Please Enter a valid E-mail</div>
+    </div>
+    <div formArrayName="hobbies">
+      <label>Hobbies</label><br/>
+      <button type="button" class="btn btn-primary" (click)="onAddHobby()">Add New Hobby</button>
+      <div class="form-group" *ngFor="let hobbyControl of signUpForm.get('userData.hobbies').controls; let i=index">
+        <input type="text" class="form-control" [formControlName]="i"
+               [ngClass]="{'is-invalid':(hobbyControl.invalid && hobbyControl.touched),
+                    'is-valid': (hobbyControl.valid && hobbyControl.touched)}">
+      </div>
+    </div>
   </div>
-  <button type="button" class="btn btn-success">Suggest UserName</button>
-  <div class="form-group">
-    <label for="mail">Email</label>
-    <input type="email" class="form-control" id="mail" placeholder="Email">
-  </div>
+  <div *ngIf="signUpForm.invalid && signUpForm.touched" class="text-danger">Please provide valid user data</div>
   <div class="form-group">
     <label for="secretQuestion">Secret Question</label>
-    <select class="form-control" id="secretQuestion">
+    <select class="form-control" id="secretQuestion" formControlName="secretQuestion">
       <option value="pet">Your First Name?</option>
       <option value="school">Your last School Name?</option>
       <option value="maidenName">Your mother maiden Name?</option>
