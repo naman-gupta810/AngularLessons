@@ -574,5 +574,12 @@ promise and observable after processing completed. Like For below example we def
 that promise directly to the HTML which show [object Object]. If we want to resolve this and then show the value 
 then we use this pipe. Ex:
 ```angular2
-
+  appStatus = new Promise(((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Online');
+    }, 2000);
+  }));
+```
+```angular2html
+<h4> App Status : {{appStatus|async}}</h4>
 ```
