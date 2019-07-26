@@ -441,5 +441,138 @@ onSubmit() {
   }
 ```
 
+# Pipes
 
+Pipe is angular built-in feature, it is used for data transformation, for Ex. consider you are using
+any property of your DOM but you need to display that property in uppercase without changing actually
+property then pipe will help you in this. There are some built-in pipes with Angular and you can create
+your own pipe. We will look both. Pipe can be parameterized or non-parameterized depending on the it requires
+any input to transform data or not. We will look first one example of built-in pipe example.
 
+Let's consider you are getting a list of users with active and deleted status, But the response
+is small caps and you want to display in uppercase then you will use the pipe using below syntax:
+```angular2html
+<ul class="list-group">
+  <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let user of users"
+      [ngClass]="{'list-group-item-success': (user.status ==='active'),
+                  'list-group-item-danger': (user.status ==='deleted')}">
+    {{user.firstName+' '+user.lastName}} |
+    {{user.number}} |
+    {{user.lastLoggedIn}}
+    <span class="badge badge-primary badge-pill">{{user.status | uppercase}}</span>
+  </li>
+</ul>
+```
+
+Now if you see we used the pipe by passing status | and the built in pipe uppercase. Right now if
+we observed in our output then the last lastLoggedIn date comes like 'Sat Jun 22 2019 00:00:00 GMT+0530 (India Standard Time)'
+which is not a good format to showcase, I just wanna date. So I pass pipe with date which is again a
+built-in pipe.
+```angular2html
+{{user.lastLoggedIn | date}}
+```
+
+But again this will give us 'Jun 22, 2019' date as output, if we want to format it as we want, we need
+to pass parameter to pipe with formatting option, this is pipe which takes parameter. We can pass parameter
+like below:
+```angular2html
+ {{user.lastLoggedIn | date:'dd-MMM-yyyy' }} |
+ {{user.lastLoggedIn | date:'fullDate' }}
+```
+The above will output like '22-Jun-2019 | Saturday, June 22, 2019'.
+To pass the parameter just after the pipe name use colon and pass the value for the parameter, a pipe can
+accept one or more parameter and multiple parameter is passed by using colon operator like **pipe:parameter1:parameter2**
+
+We can chain pipe one after other that will transform the output in one then another and final output will be
+output containing the final output after all pipe processed.
+```angular2html
+{{user.lastLoggedIn | date:'fullDate' | uppercase }}
+```
+The above will be output like 'SATURDAY, JUNE 22, 2019' first date will be formatter and then will convert
+in uppercase as seen in output it is combination of both the pipes. For more information about pipe and their arguments
+visit page [https://angular.io/api?query=pipe](https://angular.io/api?query=pipe)
+
+Now we will learn how to create custom pipes. For creating a pipe we need to create a class implement PipeTransform 
+interface and provide the decorator with pipe and give the name in decorator, which will be used in HTML. Below is ex.
+
+```angular2
+import {Pipe, PipeTransform} from '@angular/core';
+
+@Pipe({
+  name: 'shorten'
+})
+export class ShortenPipe implements PipeTransform {
+
+  transform(value: any, ...args: any[]): any {
+    if ((value as string).length > 10) {
+      return (value as string).substr(0, 10) + ' ...';
+    }
+    return value;
+  }
+
+}
+```
+And use in HTML like below:
+```angular2html
+    {{user.firstName+' '+user.lastName | shorten}} |
+```
+
+Now we will learn how to take argument and use in our pipe. We can take any number of parameter like below:
+```angular2
+  transform(value: any, length: number): any {
+    if ((value as string).length > length) {
+      return (value as string).substr(0, length) + ' ...';
+    }
+    return value;
+  }
+```
+
+Here we can pass any number of parameters. We can filter array data as well, that may be used in form. We can create
+a filter like below:
+```angular2
+import {Pipe, PipeTransform} from '@angular/core';
+
+@Pipe({
+  name: 'filter'
+})
+export class FilterPipe implements PipeTransform {
+
+  transform(value: any, filterString: string, filterProperty: string): any {
+    if (value.length === 0 || filterString === '') {
+      return value;
+    }
+    const resultArray = [];
+    if (value[filterProperty] === filterString) {
+      resultArray.push(value);
+    }
+    return resultArray;
+  }
+
+}
+```
+
+The above pipe will take the string and compare with the property value provided in argument like below:
+```angular2html
+  <li class="list-group-item d-flex justify-content-between align-items-center"
+      *ngFor="let user of users | filter:filterdString:'status'"
+      [ngClass]="{'list-group-item-success': (user.status ==='active'),
+                  'list-group-item-danger': (user.status ==='deleted')}">
+```
+
+But the above will not work in case the users array is modified during we already provided the pipe. Because
+the pipe will run everytime any data changes, which may impact in performance issues. If you still want to process
+pipe even if list changed then we will pass one more parameter in Pipe decorator, which is pure as false like below:
+```angular2
+@Pipe({
+  name: 'filter',
+  pure: false
+})
+```
+
+Now we will talk a special in-built pipe which is async pipe, this is used when we want to show data from any 
+promise and observable after processing completed. Like For below example we defined a promise and we passed
+that promise directly to the HTML which show [object Object]. If we want to resolve this and then show the value 
+then we use this pipe. Ex:
+```angular2
+
+```
