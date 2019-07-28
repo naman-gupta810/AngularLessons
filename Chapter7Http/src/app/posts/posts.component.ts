@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Post} from '../post';
-import {HttpClient} from '@angular/common/http';
-import {map, timeout} from 'rxjs/operators';
+import {PostsService} from './posts.service';
 
 @Component({
   selector: 'app-posts',
@@ -11,53 +10,37 @@ import {map, timeout} from 'rxjs/operators';
 })
 export class PostsComponent implements OnInit {
 
-  constructor(private http: HttpClient) {
+  constructor(private postService: PostsService) {
   }
 
   @ViewChild('postForm', {static: true}) postForm: NgForm;
 
   posts: Post[] = [];
   isFetching = false;
+  errorMessage = '';
 
   ngOnInit() {
-    this.fetchPosts();
-    setTimeout(() => {
-      this.postForm.setValue({
-        title: 'Sample title',
-        content: 'Sample Content'
-      });
-    }, 1000);
+    this.getAllPosts();
   }
 
   savePost() {
-    this.http.post('https://angularpro-8a8ca.firebaseio.com/post.json', this.postForm.value).subscribe((responseData) => {
-      console.log(responseData);
-    });
-  }
-
-  fetchPosts() {
-    this.isFetching = true;
-    setTimeout(() => {
-      this.http.get<{ [key: string]: Post }>('https://angularpro-8a8ca.firebaseio.com/post.json').pipe(
-        map(responseData => {
-          const postsArray: Post[] = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              postsArray.push({...responseData[key], id: key});
-            }
-          }
-          return postsArray;
-        })
-      ).subscribe(
-        (responseData) => {
-          this.posts = responseData;
-          this.isFetching = false;
-        }
-      );
-    }, 2000);
+    this.postService.createNewPost(this.postForm.value);
   }
 
   getAllPosts() {
-    this.fetchPosts();
+    this.isFetching = true;
+    this.postService.getAllPosts().subscribe(posts => {
+      this.isFetching = false;
+      this.posts = posts;
+    }, error => {
+      this.isFetching = false;
+      this.errorMessage = error.message;
+    });
+
   }
+
+  clearAllPosts() {
+    this.postService.deleteAllPosts();
+  }
+
 }
