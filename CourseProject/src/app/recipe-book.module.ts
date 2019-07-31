@@ -10,7 +10,10 @@ import {ShoppingEditComponent} from './cart/shopping-edit/shopping-edit.componen
 import {RecipeListItemComponent} from './recipe/recipe-list/recipe-list-item/recipe-list-item.component';
 import {RecipeViewContainerComponent} from './recipe/recipe-view-container/recipe-view-container.component';
 import {FormsModule} from '@angular/forms';
-import {RecipeBookRoutingModule} from './recipe-book.routing.module.ts/recipe-book.routing.module';
+import {RecipeBookRoutingModule} from './recipe-book.routing.module/recipe-book.routing.module';
+import { ShortenPipe } from './common/shorten.pipe';
+import { OpenDropDownMenuDirective } from './common/open-drop-down-menu.directive';
+import { ToastComponent } from './common/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import {RecipeBookRoutingModule} from './recipe-book.routing.module.ts/recipe-bo
     HeaderComponent,
     ShoppingEditComponent,
     RecipeListItemComponent,
-    RecipeViewContainerComponent
+    RecipeViewContainerComponent,
+    ShortenPipe,
+    OpenDropDownMenuDirective,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

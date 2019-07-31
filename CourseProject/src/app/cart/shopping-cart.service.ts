@@ -23,6 +23,20 @@ export class ShoppingCartService {
   }
 
   public addAllIngredients(ingredients: Ingredient[]) {
-      this.ingredients.push(...ingredients);
+    this.ingredients.push(...ingredients);
   }
+
+  public clearCart() {
+    while (this.ingredients.length) {
+      this.ingredients.pop();
+    }
+  }
+
+  deleteIngredient(ingredient: Ingredient) {
+    const index = this.ingredients.indexOf(ingredient);
+    if (index > -1) {
+      this.ingredients.splice(index, 1);
+    }
+  }
+
 }

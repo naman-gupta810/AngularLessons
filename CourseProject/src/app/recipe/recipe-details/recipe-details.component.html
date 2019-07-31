@@ -11,15 +11,14 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <div class="btn-group" role="group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
-              (click)="showSubMenu = !showSubMenu">
+      <div class="btn-group" role="group" rbOpenDropDownMenu #isMenuShow="rbOpenDropDownMenu">
+        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle">
           Mange Recipe
         </button>
-        <ul class="dropdown-menu" [ngClass]="{'show': showSubMenu}" aria-labelledby="btnGroupDrop1">
-          <li><a class="dropdown-item" href="#" (click)="addIngredientsToCart()">To Shopping List</a></li>
-          <li><a class="dropdown-item" href="#">Edit Recipe</a></li>
-          <li><a class="dropdown-item" href="#">Delete Recipe</a></li>
+        <ul class="dropdown-menu" [ngClass]="{'show': isMenuShow.isShow}" aria-labelledby="btnGroupDrop1">
+          <li><a class="dropdown-item" (click)="addIngredientsToCart()">To Shopping List</a></li>
+          <li><a class="dropdown-item" >Edit Recipe</a></li>
+          <li><a class="dropdown-item" >Delete Recipe</a></li>
         </ul>
       </div>
     </div>

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Recipe} from '../../model/recipe';
 import {RecipeService} from '../recipe.service';
 import {ActivatedRoute, Params} from '@angular/router';
+import {ToastService} from '../../common/toast/toast.service';
+import {ToastMessage} from '../../model/toast-message';
 
 @Component({
   selector: 'rb-recipe-details',
@@ -10,9 +12,8 @@ import {ActivatedRoute, Params} from '@angular/router';
 })
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
-  showSubMenu = false;
 
-  constructor(private recipeService: RecipeService, private activatedRoute: ActivatedRoute) {
+  constructor(private recipeService: RecipeService, private toastService: ToastService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -20,13 +21,14 @@ export class RecipeDetailsComponent implements OnInit {
           this.recipe = selectedRecipe;
         });*/
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.recipe = this.recipeService.getRecipeById(+params['id']);
+      this.recipe = this.recipeService.getRecipeById(+params.id);
     });
   }
 
 
   addIngredientsToCart() {
     this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
-    this.showSubMenu = false;
+    this.toastService.publishMessage(new ToastMessage('Ingredients Added',
+      this.recipe.ingredients.length + ' Ingredients added in shopping cart', 'lightgreen'));
   }
 }

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Ingredient} from '../../model/ingredient';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ShoppingCartService} from '../shopping-cart.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'rb-shopping-edit',
@@ -8,16 +8,31 @@ import {ShoppingCartService} from '../shopping-cart.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  ingredient: Ingredient;
+  @ViewChild('shoppingForm', {static: true}) shoppingForm: NgForm;
+
   constructor(private shoppingCartService: ShoppingCartService) {
   }
 
   ngOnInit() {
-    this.ingredient = new Ingredient('', 0, null);
+    setTimeout(() => this.shoppingForm.setValue({
+      name: '',
+      amount: 0,
+      unit: 'unit'
+    }), 500);
   }
 
   onIngredientAdd() {
-    this.shoppingCartService.addIngredient(this.ingredient);
-    this.ingredient = new Ingredient('', 0, null);
+    console.log(this.shoppingForm.value);
+    this.shoppingCartService.addIngredient(this.shoppingForm.value);
+    this.shoppingForm.resetForm({
+      name: '',
+      amount: 0,
+      unit: 'unit'
+    });
+     /*this.ingredient = new Ingredient('', 0, null);*/
+  }
+
+  onClearCart() {
+    this.shoppingCartService.clearCart();
   }
 }

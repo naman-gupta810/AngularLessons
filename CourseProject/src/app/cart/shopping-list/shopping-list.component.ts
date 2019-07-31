@@ -18,4 +18,7 @@ export class ShoppingListComponent implements OnInit {
     this.ingredients = this.shoppingCartService.getAllShoppingItems();
   }
 
+  deleteIngredient(ingredient: Ingredient) {
+    this.shoppingCartService.deleteIngredient(ingredient);
+  }
 }
