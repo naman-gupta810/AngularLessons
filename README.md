@@ -10,3 +10,4 @@ for that chapter.
 [Lesson 4 : Services and Dependency Injection](Chapter4ServicesAndDI)<br/>
 [Lesson 5 : Routing](Chapter5Routing)<br/>
 [Lesson 6 : Forms And Pipe](Chapter6Forms)<br/>
+[Lesson 7 : Http](Chapter7Http)<br/>
