@@ -1,4 +1,4 @@
-# Chapter 7 HTTP, Authentication and Route Protection
+# Chapter 7 HTTP
 
 ## HTTP
 Till chapter 6 we have learned about lot of components services, froms, pipes etc., But till now we are keeping
@@ -189,15 +189,5 @@ it reach to service. So We can do that using the observable pipe operator and pa
 are logging response data. So do this we use tap operator of the RxJS.
 
 We can have multiple interceptor and that can be provided in providers array. Just keep in the mind the order of 
-interceptor matters. The interceptors will be executed in the order they have provided.
-
-With this we almost cover all the concept of the HTTP, Let's move on the Authentication section, this is a bit of HTTP
-calls and Route Guard. But to understand this, you should have a bit of knowledge of REST authentication. If you are
-new to REST please first read below blog and then come back for next section:
-[https://dzone.com/articles/stateless-authentication-with-json-web-tokens](https://dzone.com/articles/stateless-authentication-with-json-web-tokens)
-
-
-## Authentication and Route Protection
-So we are going to use token based Authentication in this section to explain how we can configure JWT based Auth
-in Angular.
-
+interceptor matters. The interceptors will be executed in the order they have provided. That covers all of the HTTP
+package that is needed for build an application.
