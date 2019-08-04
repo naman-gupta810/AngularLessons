@@ -9,11 +9,12 @@ import {HeaderComponent} from './common/header/header.component';
 import {ShoppingEditComponent} from './cart/shopping-edit/shopping-edit.component';
 import {RecipeListItemComponent} from './recipe/recipe-list/recipe-list-item/recipe-list-item.component';
 import {RecipeViewContainerComponent} from './recipe/recipe-view-container/recipe-view-container.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RecipeBookRoutingModule} from './recipe-book.routing.module/recipe-book.routing.module';
 import { ShortenPipe } from './common/shorten.pipe';
 import { OpenDropDownMenuDirective } from './common/open-drop-down-menu.directive';
 import { ToastComponent } from './common/toast/toast.component';
+import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +28,14 @@ import { ToastComponent } from './common/toast/toast.component';
     RecipeViewContainerComponent,
     ShortenPipe,
     OpenDropDownMenuDirective,
-    ToastComponent
+    ToastComponent,
+    RecipeEditComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    RecipeBookRoutingModule
+    RecipeBookRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [RecipeBookRootComponent]

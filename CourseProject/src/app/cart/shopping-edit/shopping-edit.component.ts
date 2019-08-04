@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ShoppingCartService} from '../shopping-cart.service';
-import {NgForm} from '@angular/forms';
+import {NgForm, ValidationErrors} from '@angular/forms';
+import {ErrorMessagesService} from '../../common/error-messages-service';
 
 @Component({
   selector: 'rb-shopping-edit',
@@ -10,7 +11,7 @@ import {NgForm} from '@angular/forms';
 export class ShoppingEditComponent implements OnInit {
   @ViewChild('shoppingForm', {static: true}) shoppingForm: NgForm;
 
-  constructor(private shoppingCartService: ShoppingCartService) {
+  constructor(private shoppingCartService: ShoppingCartService, private errorMessageService: ErrorMessagesService) {
   }
 
   ngOnInit() {
@@ -29,10 +30,14 @@ export class ShoppingEditComponent implements OnInit {
       amount: 0,
       unit: 'unit'
     });
-     /*this.ingredient = new Ingredient('', 0, null);*/
+    /*this.ingredient = new Ingredient('', 0, null);*/
   }
 
   onClearCart() {
     this.shoppingCartService.clearCart();
+  }
+
+  getErrorMessage(fieldName: string, errors: ValidationErrors) {
+    return this.errorMessageService.getErrorMessage(fieldName, Object.keys(errors)[0]);
   }
 }

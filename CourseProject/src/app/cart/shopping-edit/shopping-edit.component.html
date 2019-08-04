@@ -1,15 +1,25 @@
 <form (ngSubmit)="onIngredientAdd()" #shoppingForm="ngForm">
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" placeholder="Name" name="name" ngModel>
+    <input type="text" class="form-control" id="name"
+           placeholder="Name" name="name" ngModel required [minlength]="3" #name="ngModel"
+           [ngClass]="{'is-invalid' : (name.touched && name.invalid),'is-valid': (name.touched && name.valid)}">
+    <div class="invalid-feedback" *ngIf="name.touched && name.invalid">
+      {{getErrorMessage('name',name.errors)}}
+    </div>
   </div>
   <div class="form-group">
     <label for="amount">Amount</label>
-    <input type="number" class="form-control" id="amount" step="0.1" placeholder="Amount"  name="amount" ngModel>
+    <input type="number" class="form-control" id="amount"
+           step="0.1" placeholder="Amount" name="amount" ngModel required minlength="2" #amount="ngModel"
+           [ngClass]="{'is-invalid' : (amount.touched && amount.invalid),'is-valid': (amount.touched && amount.valid)}">
+    <div class="invalid-feedback" *ngIf="amount.touched && amount.invalid">
+      {{getErrorMessage('amount',amount.errors)}}
+    </div>
   </div>
   <div class="form-group">
     <label for="unitSelect">Unit</label>
-    <select class="custom-select" id="unitSelect" name="unit" ngModel>
+    <select class="custom-select" id="unitSelect" name="unit" ngModel required>
       <option value="gm">gm (Gram)</option>
       <option value="ml">ml (Milliliter)</option>
       <option value="unit">Unit (Nos.)</option>
@@ -19,7 +29,7 @@
   </div>
   <div class="form-row">
     <div class="col">
-      <button class="btn btn-success btn-block" type="submit">Add</button>
+      <button class="btn btn-success btn-block" type="submit" [disabled]="shoppingForm.invalid">Add</button>
     </div>
     <div class="col">
       <button class="btn btn-secondary btn-block" type="button" (click)="onClearCart()">Clear List</button>

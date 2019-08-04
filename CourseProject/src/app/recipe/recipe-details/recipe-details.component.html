@@ -17,8 +17,8 @@
         </button>
         <ul class="dropdown-menu" [ngClass]="{'show': isMenuShow.isShow}" aria-labelledby="btnGroupDrop1">
           <li><a class="dropdown-item" (click)="addIngredientsToCart()">To Shopping List</a></li>
-          <li><a class="dropdown-item" >Edit Recipe</a></li>
-          <li><a class="dropdown-item" >Delete Recipe</a></li>
+          <li><a class="dropdown-item" [routerLink]="['..','edit',recipe.id]" >Edit Recipe</a></li>
+          <li><a class="dropdown-item" (click)="deleteRecipe(recipe)">Delete Recipe</a></li>
         </ul>
       </div>
     </div>

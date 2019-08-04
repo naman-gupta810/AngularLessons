@@ -1,0 +1,93 @@
+<h3>
+  <div *ngIf="isEditingRecipe">Edit Recipe</div>
+  <div *ngIf="!isEditingRecipe">New Recipe</div>
+</h3>
+<form [formGroup]="recipeForm" (ngSubmit)="saveRecipe()">
+  <div class="form-row">
+    <div class="form-group col-md-7">
+      <label for="name">Recipe Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Recipe Name" formControlName="name"
+             [ngClass]="{'is-invalid' : (recipeForm.get('name').touched && recipeForm.get('name').invalid),
+             'is-valid': (recipeForm.get('name').touched && recipeForm.get('name').valid)}">
+      <div class="invalid-feedback" *ngIf="recipeForm.get('name').touched && recipeForm.get('name').invalid">
+        {{getErrorMessage('name', recipeForm.get('name').errors)}}
+      </div>
+
+
+      <label for="imageUrl">Image Url</label>
+      <input type="text" class="form-control" id="imageUrl" placeholder="Image URL" formControlName="imagePath"
+             [ngClass]="{'is-invalid' : (recipeForm.get('imagePath').touched && recipeForm.get('imagePath').invalid),
+             'is-valid': (recipeForm.get('imagePath').touched && recipeForm.get('imagePath').valid)}">
+      <div class="invalid-feedback" *ngIf="recipeForm.get('imagePath').touched && recipeForm.get('imagePath').invalid">
+        {{getErrorMessage('imagePath', recipeForm.get('imagePath').errors)}}
+      </div>
+
+      <label for="description">Description</label>
+      <textarea class="form-control" id="description" rows="4" placeholder="Description"
+                formControlName="description"
+                [ngClass]="{'is-invalid' : (recipeForm.get('description').touched && recipeForm.get('description').invalid),
+                  'is-valid': (recipeForm.get('description').touched && recipeForm.get('description').valid)}"></textarea>
+
+      <div class="invalid-feedback" *ngIf="recipeForm.get('description').touched && recipeForm.get('description').invalid">
+        {{getErrorMessage('description', recipeForm.get('description').errors)}}
+      </div>
+
+    </div>
+    <div class="form-group col-md-4">
+      <img src="{{recipeForm.get('imagePath').value}}" alt="image" style="max-width: 280px; max-height: 280px;"
+           class="img-fluid"/>
+    </div>
+  </div>
+
+  <ul class="list-group" formArrayName="ingredients">
+    <div class="form-row">
+      <div class="form-group col-md-4"><label for="iname">Ingredient Name</label></div>
+      <div class="form-group col-md-3"><label for="amount">Amount</label></div>
+      <div class="form-group col-md-3"><label for="unitSelect">Unit</label></div>
+    </div>
+    <div class="form-row" *ngFor="let ingredient of recipeForm.get('ingredients').controls let i = index;"
+         [formGroupName]="i">
+      <div class="form-group col-md-4">
+        <input type="text" class="form-control" id="iname" placeholder="Ingredient Name" formControlName="name"
+               [ngClass]="{'is-invalid' : (ingredient.controls.name.touched &&ingredient.controls.name.invalid),
+                  'is-valid': (ingredient.controls.name.touched && ingredient.controls.name.valid)}">
+        <div class="invalid-feedback" *ngIf="ingredient.controls.name.touched && ingredient.controls.name.invalid">
+          {{getErrorMessage('name', ingredient.controls.name.errors)}}
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <input type="number" class="form-control" id="amount" step="0.1" placeholder="Amount" formControlName="amount"
+               [ngClass]="{'is-invalid' : (ingredient.controls.amount.touched &&ingredient.controls.amount.invalid),
+                  'is-valid': (ingredient.controls.amount.touched && ingredient.controls.amount.valid)}">
+        <div class="invalid-feedback" *ngIf="ingredient.controls.amount.touched && ingredient.controls.amount.invalid">
+          {{getErrorMessage('amount', ingredient.controls.amount.errors)}}
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <select class="custom-select" id="unitSelect" formControlName="unit">
+          <option value="gm">gm (Gram)</option>
+          <option value="ml">ml (Milliliter)</option>
+          <option value="unit">Unit (Nos.)</option>
+          <option value="kg">kg (Kilogram)</option>
+          <option value="l">l (Liter)</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <button type="button" class="btn btn-danger" (click)="deleteIngredientFromRecipe(i)">
+          <span class="oi oi-trash"></span>
+        </button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-12 text-right">
+        <button type="button" class="btn btn-success" (click)="addNewIngredient()">
+          <span class="oi oi-plus"></span>
+        </button>
+      </div>
+    </div>
+  </ul>
+  <button type="submit" class="btn btn-success" [disabled]="recipeForm.invalid">Save Recipe</button>
+</form>

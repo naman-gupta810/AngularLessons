@@ -9,7 +9,7 @@ export class ShortenPipe implements PipeTransform {
     if (maxLength === undefined) {
       maxLength = 25;
     }
-    if ((value as string).length > maxLength) {
+    if (value !== null && value !== undefined && (value as string).length > maxLength) {
       return (value as string).substr(0, maxLength) + '...';
     }
     return value;

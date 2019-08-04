@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Recipe} from '../../model/recipe';
 import {RecipeService} from '../recipe.service';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ToastService} from '../../common/toast/toast.service';
 import {ToastMessage} from '../../model/toast-message';
 
@@ -13,7 +13,8 @@ import {ToastMessage} from '../../model/toast-message';
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
 
-  constructor(private recipeService: RecipeService, private toastService: ToastService, private activatedRoute: ActivatedRoute) {
+  constructor(private recipeService: RecipeService, private toastService: ToastService,
+              private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -30,5 +31,12 @@ export class RecipeDetailsComponent implements OnInit {
     this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
     this.toastService.publishMessage(new ToastMessage('Ingredients Added',
       this.recipe.ingredients.length + ' Ingredients added in shopping cart', 'lightgreen'));
+  }
+
+  deleteRecipe(recipe: Recipe) {
+    this.recipeService.deleteRecipe(recipe);
+    this.toastService.publishMessage(new ToastMessage('Recipe Deleted',
+      'Recipe : ' + recipe.name + ' deleted.', 'lightpink'));
+    this.router.navigate(['recipes']);
   }
 }

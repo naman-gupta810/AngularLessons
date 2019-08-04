@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Recipe} from '../model/recipe';
 import {Ingredient} from '../model/ingredient';
 import {ShoppingCartService} from '../cart/shopping-cart.service';
@@ -42,10 +42,38 @@ export class RecipeService {
   }
 
   getAllRecipes(): Recipe[] {
-    return this.recipes;
+    return this.recipes.sort((a, b) => {
+      return a.id - b.id;
+    });
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingCartService.addAllIngredients(ingredients);
+  }
+
+  addNewRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+  }
+
+  replaceRecipe(editedRecipe: Recipe) {
+    let selectedRecipe: Recipe = null;
+    for (const recipe of this.recipes) {
+      if (recipe.id === editedRecipe.id) {
+        selectedRecipe = recipe;
+      }
+    }
+    const index = this.recipes.indexOf(selectedRecipe);
+    if (index > -1) {
+      this.recipes.splice(index, 1);
+    }
+    this.recipes.unshift(editedRecipe);
+  }
+
+  deleteRecipe(recipe: Recipe) {
+    const index = this.recipes.indexOf(recipe);
+    if (index > -1) {
+      this.recipes.splice(index, 1);
+    }
+
   }
 }
