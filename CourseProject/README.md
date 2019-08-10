@@ -228,4 +228,54 @@ For this we have created below two services:
 Then we removed almost all event binding and used service to emit and subscribe the event.
 After this we also added one function to put all the recipe ingredients to shopping list. 
 
-### Setting up routes
+### Setting up routes & Forms
+We had added forms in shopping-cart, recipe edit and new recipe. Then we create routes and child routes for
+the recipe.
+
+We had designed shopping-cart form as template driven form while the recipe form is reactive form in which we
+are using component to add dynamically.
+
+### Creating dynamic component
+We have also created a sample login, Just consider we want to show model in the UI as error message. We have to approach for this
+one is ngIf which we have used to show toasts. Now we will see a programmatic way to create components.
+
+For this we need to create component class which we need to create dynamically. We created below class and it's template for the
+same.
+
+[modal.component.ts](src/app/common/modal/modal.component.ts)
+[modal.component.html](src/app/common/modal/modal.component.html)
+
+
+Now We need to create warning on the login page, for that we need place a placeholder and then we need ViewContainerRef to add 
+our component to this. So we will inject viewcontainerref in directive. Below is directive we created for this:
+
+[placeholder.directive.ts](src/app/placeholder.directive.ts)
+
+Now to add component in directive's view container from login component, first we need to add directive in template and then 
+We need to inject ComponentFactoryResolver in login component and get the reference of directive, then we will add component 
+using below code:
+
+```angular2
+      constructor(private authService: AuthService, private router: Router,
+                  private toastService: ToastService, private compResolver: ComponentFactoryResolver) {
+      }
+      @ViewChild(PlaceholderDirective, {static: false}) errorHolder: PlaceholderDirective;
+```
+```angular2
+      const modalFactory = this.compResolver.resolveComponentFactory(ModalComponent);
+      const errorContainer = this.errorHolder.vcRef;
+      errorContainer.clear();
+      const modalRef = errorContainer.createComponent(modalFactory);
+      modalRef.instance.title = 'Login Error';
+      modalRef.instance.message = 'Username or password not correct';
+      this.closeSubs = modalRef.instance.close.subscribe(() => {
+        this.closeSubs.unsubscribe();
+        errorContainer.clear();
+      });
+```
+The modelref.instance we are using access properties of component and to initialize them. The subscription we are using
+perform close operation of the component and we clear using programmatically.
+
+
+### Optimizing Modules
+

@@ -9,6 +9,9 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['shopping-list']" routerLinkActive="active">Shopping List</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['login']" routerLinkActive="active">Login</a>
+      </li>
     </ul>
     <ul class="navbar-nav" rbOpenDropDownMenu #isMenuShow="rbOpenDropDownMenu">
       <li class="nav-item dropdown" [ngClass]="{'show': isMenuShow.isShow}">

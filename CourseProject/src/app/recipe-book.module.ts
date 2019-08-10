@@ -15,6 +15,9 @@ import { ShortenPipe } from './common/shorten.pipe';
 import { OpenDropDownMenuDirective } from './common/open-drop-down-menu.directive';
 import { ToastComponent } from './common/toast/toast.component';
 import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component';
+import { LoginComponent } from './common/auth/login/login.component';
+import { ModalComponent } from './common/modal/modal.component';
+import { PlaceholderDirective } from './placeholder.directive';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component'
     ShortenPipe,
     OpenDropDownMenuDirective,
     ToastComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    LoginComponent,
+    ModalComponent,
+    PlaceholderDirective
   ],
   imports: [
     BrowserModule,
@@ -38,7 +44,8 @@ import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component'
     ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [RecipeBookRootComponent]
+  bootstrap: [RecipeBookRootComponent],
+  entryComponents: [ModalComponent]
 })
 export class RecipeBookModule {
 }
