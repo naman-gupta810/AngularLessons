@@ -274,8 +274,34 @@ using below code:
       });
 ```
 The modelref.instance we are using access properties of component and to initialize them. The subscription we are using
-perform close operation of the component and we clear using programmatically.
+perform close operation of the component and we clear using programmatically. For this to work we need to do one more step
+which is defining the component in the entryComponents of module. It need to declare there because for rest of the component
+it recognize via template or routes, but this component is neither used in template nor declared in the route.
 
 
 ### Optimizing Modules
+It is recommended to use feature modules. We can split our application into features module that keep our code clean.
+Also we can take advantage of this, we can load our application in bundles, When we visit our application initial
+bundle in Main AppComponent will be loaded, then we visit a particular url then rest of module for that feature will
+be downloaded. To do this we need to add below code in our appRoute which will load desired module on visiting
+the url. One important part is when we load the module using the path, then all component of the module 
+routes start with the prefix url of module and then the feature module route is appened and loaded.
+```angular2
+const routes: Routes = [{
+  path: 'your-path',
+  loadChildren: () => import('./your-module-path/module-name.module').then(m => m.ModuleName)
+}];
+```
+
+But with we may experience a lag in response of modules, So if we want to download immediate module that will be used
+with current module then we need to pass below argument:
+```angular2
+RouterModule.forRoot(appRoutes,{preloadingStrategy: PreloadAllModule})
+```
+
+Recommendation for using services: Try to inject services in root, if you provide the service in module, it will
+create multiple instances depending on numbers of time you declared in modules. And that can cause bugs in your 
+application so as a recommended practice inject service in root, so that only one instance is available throughout the
+application.
+
 
