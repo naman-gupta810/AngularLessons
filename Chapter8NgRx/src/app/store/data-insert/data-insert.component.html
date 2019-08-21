@@ -1,0 +1,16 @@
+<div class="m-lg-3">
+  <form #emailForm="ngForm" (ngSubmit)="addEmail()">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input aria-describedby="emailHelp" class="form-control" id="exampleInputEmail1" name="email" ngModel=""
+             placeholder="Enter email" type="email">
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+</div>
+
+<div class="m-lg-3 col-md-6">
+  <ul class="list-group">
+    <li *ngFor="let email of emails" class="list-group-item">{{email}}</li>
+  </ul>
+</div>
