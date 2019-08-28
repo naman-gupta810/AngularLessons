@@ -33,16 +33,18 @@ export function userReducer(state = initialState, action: UserAction.UserActions
         editUser: null
       };
     case UserAction.UPDATE_USER:
-      const user = state.users[action.payload.editIndex];
+      const user = state.users[state.editUserIndex];
       const editedUser = {
         ...user,
         ...action.payload.user
       };
       const updatedUsers = [...state.users];
-      updatedUsers[action.payload.editIndex] = editedUser;
+      updatedUsers[state.editUserIndex] = editedUser;
       return {
         ...state,
-        users: [...updatedUsers]
+        users: [...updatedUsers],
+        editUserIndex: -1,
+        editUser: null
       };
     case UserAction.DELETE_USER:
       return {

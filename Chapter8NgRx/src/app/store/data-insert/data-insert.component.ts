@@ -14,7 +14,6 @@ export class DataInsertComponent implements OnInit, OnDestroy {
 
   @ViewChild('emailForm', {static: true}) form: NgForm;
   isEditMode = false;
-  editIndex: number;
   subscription: Subscription;
 
   constructor(private store: Store<AppState>) {
@@ -24,7 +23,6 @@ export class DataInsertComponent implements OnInit, OnDestroy {
     this.subscription = this.store.select('userStore').subscribe(stateData => {
       if (stateData.editUserIndex > -1) {
         this.isEditMode = true;
-        this.editIndex = stateData.editUserIndex;
         this.form.setValue(stateData.editUser);
       } else {
         this.isEditMode = false;
@@ -34,19 +32,16 @@ export class DataInsertComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.isEditMode) {
-      this.store.dispatch(new UpdateUserAction({editIndex: this.editIndex, user: this.form.value}));
+      this.store.dispatch(new UpdateUserAction({user: this.form.value}));
     } else {
       this.store.dispatch(new AddUserAction(this.form.value));
     }
     this.isEditMode = false;
-    this.editIndex = -1;
     this.form.reset();
-    this.store.dispatch(new StopEditUserAction());
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.store.dispatch(new StopEditUserAction());
-    this.editIndex = -1;
   }
 }

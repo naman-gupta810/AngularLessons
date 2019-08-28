@@ -116,4 +116,76 @@ If we want to add the user then we will use the store like below:
 ```
 
 Now define multiple actions like edit and delete case and enhance our reducer to handle these cases.
-Also Let's see how to define multiple stores and use it our applications.
+Also Let's see how to define multiple stores and use it our applications. When we have multiple propeties
+in our store state like below:
+```angular2
+const initialState= {
+  users: [new User('Test', 'Test', 'test@test.com')],
+  editUser: null,
+  editUserIndex: -1
+};
+```
+
+Then we define an interface other we need to declare this type whenever we inject Store. To manage this
+first we create a state of the User like below:
+```angular2
+export interface UserState {
+  users: User[];
+  editUser: User;
+  editUserIndex: number;
+}
+
+const initialState: UserState = {
+  users: [new User('Test', 'Test', 'test@test.com')],
+  editUser: null,
+  editUserIndex: -1
+};
+```
+
+Now still in the store injection declaration we need to provide {userStore: UserState}, to avoid such a long syntax
+again we create an interface and we will append our upcoming stores in this interface which is used as Type
+while injecting store. Like below:
+```angular2
+export interface AppState {
+  userStore: UserState;
+}
+``` 
+```angular2
+constructor(private store: Store<AppState>) {
+  }
+```
+As you can see in above blocks the injection for the store becomes easy. Now Let's get rid of reducer declartion
+in module and put that in a class. Like we are creating one more store. 
+```angular2
+export const applicationActionReducerMap: ActionReducerMap<AppState> = {
+  userStore: userReducer,
+  postStore: postsReducer
+};
+
+export interface AppState {
+  userStore: UserState;
+  postStore: PostState;
+}
+```
+```angular2
+ imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    StoreModule.forRoot(applicationActionReducerMap)
+  ],
+```
+
+As dispatch action approach to each reducer we have some best practices to follow, maintain unique name
+so we use *[function] operation*, so it will maintain uniqueness of Action.
+
+### Handling side effects
+Let's understand what is side effect. Side effect is basically parts of code which we run in our application
+but which is not so important to immediate update of UI. Like HTTP calls we made, but UI can be updated when
+we get response or error only. So if we can see HTTP calls can be break in three steps calling the API, 
+getting the success or getting the error. So like we are segregating  the responsibilities for like the 
+sending the request does not matter what will be the response or success and error response have anything 
+relate to sending the request. Use below command to add ngRx\effects in your project:
+```
+npm install @ngrx/effects --save
+```  

@@ -1,11 +1,11 @@
 import {Action} from '@ngrx/store';
 import {User} from '../model/user';
 
-export const ADD_USER = 'ADD_USER';
-export const UPDATE_USER = 'UPDATE_USER';
-export const DELETE_USER = 'DELETE_USER';
-export const START_EDIT_USER = 'START_EDIT_USER';
-export const STOP_EDIT_USER = 'STOP_EDIT_USER';
+export const ADD_USER = '[User] Add User';
+export const UPDATE_USER = '[User] Update User';
+export const DELETE_USER = '[User] Delete User';
+export const START_EDIT_USER = '[User] Start User Edit';
+export const STOP_EDIT_USER = '[User] Stop User Edit';
 
 export class AddUserAction implements Action {
   readonly type = ADD_USER;
@@ -31,7 +31,7 @@ export class StopEditUserAction implements Action {
 export class UpdateUserAction implements Action {
   readonly type = UPDATE_USER;
 
-  constructor(public payload: { editIndex: number, user: User }) {
+  constructor(public payload: { user: User }) {
   }
 }
 

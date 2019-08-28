@@ -8,8 +8,8 @@ import {HeaderComponent} from './common/header/header.component';
 import {FormsModule} from '@angular/forms';
 import {FakePostsComponent} from './effect/fake-posts/fake-posts.component';
 import {StoreModule} from '@ngrx/store';
-import {userReducer} from './store/state/user.reducer';
 import {DataViewComponent} from './store/data-view/data-view.component';
+import {applicationActionReducerMap} from './common/application-store-manager';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import {DataViewComponent} from './store/data-view/data-view.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({userStore: userReducer})
+    StoreModule.forRoot(applicationActionReducerMap)
   ],
   providers: [],
   bootstrap: [AppComponent]
