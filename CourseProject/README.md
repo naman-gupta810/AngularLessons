@@ -293,11 +293,16 @@ const routes: Routes = [{
 }];
 ```
 
-But with we may experience a lag in response of modules, So if we want to download immediate module that will be used
-with current module then we need to pass below argument:
+Complementing lazy loading with preloading, the module loader waits for a period of inactivity after the initial 
+page load to start downloading the rest of the modules.To do this we need to pass below argument in root routes:
 ```angular2
 RouterModule.forRoot(appRoutes,{preloadingStrategy: PreloadAllModule})
 ```
+
+With both working together, we get the benefits of:
+* Small initial page load, so the user can start interacting as quickly as possible.
+* Fast navigation and interaction, since the rest of the application is loaded to the client once the browser detects inactivity.
+* Most importantly: No negative side effects for the user.
 
 Recommendation for using services: Try to inject services in root, if you provide the service in module, it will
 create multiple instances depending on numbers of time you declared in modules. And that can cause bugs in your 
