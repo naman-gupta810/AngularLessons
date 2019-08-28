@@ -1,0 +1,11 @@
+<div class="m-lg-3 col-md-8">
+  <ul class="list-group">
+    <li *ngFor="let user of (users|async).users;let i=index;" class="list-group-item">
+      {{'Name is : ' + user.firstName + ' ' + user.lastName + ' whose Email is : ' + user.email}}
+      <div class="float-right">
+        <button (click)="onEdit(i)" class="btn btn-sm btn-primary mr-2" type="button">Edit</button>
+        <button (click)="deleteUser(i)" class="btn btn-sm btn-danger" type="button">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>

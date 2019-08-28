@@ -1,16 +1,24 @@
 <div class="m-lg-3">
-  <form #emailForm="ngForm" (ngSubmit)="addEmail()">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input aria-describedby="emailHelp" class="form-control" id="exampleInputEmail1" name="email" ngModel=""
-             placeholder="Enter email" type="email">
+  <form #emailForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="firstName">First Name</label>
+        <input class="form-control" id="firstName" name="firstName" ngModel
+               placeholder="First Name" type="text">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="lastName">Password</label>
+        <input class="form-control" id="lastName" name="lastName" ngModel
+               placeholder="Last Name" type="text">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="email">Password</label>
+        <input class="form-control" id="email" name="email" ngModel
+               placeholder="E-mail" type="email">
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
   </form>
 </div>
 
-<div class="m-lg-3 col-md-6">
-  <ul class="list-group">
-    <li *ngFor="let email of emails" class="list-group-item">{{email}}</li>
-  </ul>
-</div>
+<app-data-view></app-data-view>

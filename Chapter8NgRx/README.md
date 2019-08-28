@@ -21,7 +21,7 @@ So with NgRx we are going to solve these problems.
 Redux is pattern which solve these problems. Let's understand what is Redux pattern. Below diagram gives a
 high level understanding of the pattern.
 
-![Redux Pattern](/src/assets/img/Redux%20Pattern.png)
+![Redux Pattern](./src/assets/img/Redux%20Pattern.png)
 
 In the diagram the state is store in central application store, which provides state to component and state.
 When we want change state we emit action with data which is optional to pass, which is then computed by a
@@ -31,7 +31,89 @@ reduced state to application store immutably.
 NgRx implements this Redux pattern. It provides deep integration with Angular, in Typescript and also provide
 solution to complicated state management from like HTTP calls.a
 
+In initial commit of this chapter we have simple example in which we are adding the email and reflecting on
+the GUI. Now we will use NgRx to sync changes form to list.
+
 Let's learn how to install and use NgRx Store.
 
+### Installing and using ngRx Store 
 
+To install NgRx we need to use below command.
+```
+npm install --save @ngrx/store
+```
 
+After installing we will start writing our reducer method then actions. And then we dispatch actions.
+Let's look how to write reducer.
+
+We will export method which takes two argument, first argument is current state and second argument is
+action. This method is used by NgRx, so we will not take additional argument. And after finding which
+action it is, it returns a new state. This is keep in my mind the state return by this method is 
+immutable, i.e. we cannot use same state object while returning. When we are running our application
+first time we need to initialize our initial state. Like below:
+
+```angular2
+const initialState = {
+  users: [new User('Test', 'Test', 'test@test.com')]
+};
+
+export function userReducer(state = initialState, action) {}
+```
+
+Now let define actions, and then handle it in reducer with switch statement. Define actions which
+implements Action from ngRx\Store package. To define actions we will create new package and define
+like below:
+```angular2
+
+export const ADD_USER = 'ADD_USER';
+
+export class AddUser implements Action {
+  readonly type = ADD_USER;
+
+  constructor(public payload: User) {
+  }
+}
+```
+
+Till this time we created elements required to manage store, but to initialize we need to import
+StoreModule and initialize the reducer within store. Like below:
+```angular2
+imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    StoreModule.forRoot({user: userReducer})
+  ]
+```
+Now we are going to use this store. To use this store we need to inject this in class like below:
+```angular2
+users: Observable<{ users: User[] }>;
+
+  constructor(private store: Store<{ userStore: { users: User[] } }>) {
+  }
+
+  ngOnInit() {
+    this.users = this.store.select('userStore');
+  }
+```
+We injects our store, and get observable which we consumed using async pipe and used the users array.
+If we want to add the user then we will use the store like below:
+```angular2
+ constructor(private store: Store<{ userStore: { users: User[] } }>) {
+  }
+
+  ngOnInit() {
+  }
+
+  onSubmit() {
+    if (this.isEditMode) {
+    } else {
+      this.store.dispatch(new AddUserAction(this.form.value));
+    }
+    this.isEditMode = false;
+    this.form.reset();
+  }
+```
+
+Now define multiple actions like edit and delete case and enhance our reducer to handle these cases.
+Also Let's see how to define multiple stores and use it our applications.

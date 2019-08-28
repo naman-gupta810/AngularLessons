@@ -3,8 +3,11 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li [routerLinkActive]="['active']" class="nav-item">
         <a [routerLink]="['/state-management']" class="nav-link">State Management</a>
+      </li>
+      <li [routerLinkActive]="['active']" class="nav-item">
+        <a [routerLink]="['/effects']" class="nav-link">Effects</a>
       </li>
     </ul>
   </div>
