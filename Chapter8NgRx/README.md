@@ -187,5 +187,81 @@ getting the success or getting the error. So like we are segregating  the respon
 sending the request does not matter what will be the response or success and error response have anything 
 relate to sending the request. Use below command to add ngRx\effects in your project:
 ```
-npm install @ngrx/effects --save
+npm install --save @ngrx/effects 
 ```  
+
+Lets's create our first effect. FOr this first we create a class and import actions from ngrx/effects, and we inject
+that like below:
+```angular2
+export class PostEffects {
+  constructor(private actions: Actions, private http: HttpClient) {
+    }
+}
+``` 
+
+Now to register our new effect we will call pipe in actions which gives a series of action, with this pipe we will check
+the action type using ofType operator in which we pass the Action name which we created in actions file, and now this
+effect will catch this action and sends a request to remote server using switchMap operator. Now we need to handle deal 
+with SUCCESS or FAILURE part of the response, which we will do in reducer. So from this observable we will dispatch 
+another action which will captured by reducer. So we will pipe the observable we will chain the action depends on the response.
+So our effects look like Below:
+```angular2
+  @Effect()
+  getpost = this.actions.pipe(ofType(GET_POST_START),
+    switchMap(() => {
+      return this.http.get('https://my-json-server.typicode.com/typicode/demo/posts').pipe(
+        map(response => {
+          return new GetPostSuccessAction(response as Post[]);
+        }),
+        catchError(err => {
+          return of(new ApiErrorAction(err))
+        })
+      );
+    }),
+  );
+```
+
+To register our effect @effect decorator is necessary, also for the injecting our actions and http we need @Injectable on the class.
+After writing all of our effects, reducer and action. We need to register this with appmodule like below:
+```angular2
+ imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    StoreModule.forRoot(applicationActionReducerMap),
+    EffectsModule.forRoot([PostEffects])
+  ],
+```
+
+So this covers most of the effects and store. Attached application with this chapter provides a bit of idea how you implement.
+[post.action.ts](src/app/effect/state/post.action.ts)
+
+[post.effects.ts](src/app/effect/state/post.effects.ts)
+
+[post.reducer.ts](src/app/effect/state/post.reducer.ts)
+
+Special situation handling, like after save routing to other URL can be handled using effect.
+Like after save you can catch effect and do the operation within the tap operator. Also
+since we are not forwarding any action we need to notify NgRx effect by putting dispatch 
+attribute to false, like below:
+```angular2
+ @Effect({dispatch: false})
+  createSuccess = this.actions.pipe(ofType(CREATE_POST_SUCCESS), tap(() => {
+      this.router.navigate(['/']);
+    }
+  ));
+```
+
+We have more packages in NgRx, but instead of going each these two were most commonly used packages. 
+As our our application get bigger sometimes we need some debug, for that we need to install two things
+first is ngrx package and one is redux browser extension, For chrome I am listing below:
+```angular2
+npm install @ngrx/store-devtools --save
+```
+Above install package in your application you need to include module in your AppModule.
+Now we have to install below plugin which gives us detailed state information.
+
+
+https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
+

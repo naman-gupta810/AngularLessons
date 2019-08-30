@@ -10,6 +10,9 @@ import {FakePostsComponent} from './effect/fake-posts/fake-posts.component';
 import {StoreModule} from '@ngrx/store';
 import {DataViewComponent} from './store/data-view/data-view.component';
 import {applicationActionReducerMap} from './common/application-store-manager';
+import {EffectsModule} from "@ngrx/effects";
+import {PostEffects} from "./effect/state/post.effects";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import {applicationActionReducerMap} from './common/application-store-manager';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot(applicationActionReducerMap)
+    HttpClientModule,
+    StoreModule.forRoot(applicationActionReducerMap),
+    EffectsModule.forRoot([PostEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
